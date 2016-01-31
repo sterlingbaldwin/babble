@@ -3,10 +3,14 @@ A forum for chatting, or a chat client for making forums
 
 
 > ## install
-> https://github.com/sterlingbaldwin/babble.git\s\s
-> cd babble\s\s
-> npm install\s\s
-> npm start\s\s
+> https://github.com/sterlingbaldwin/babble.git
+
+> cd babble
+
+> npm install
+
+> npm start
+
 
 
 # project notes
