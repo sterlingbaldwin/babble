@@ -10,6 +10,10 @@ var users = require('./routes/users');
 
 var app = express();
 
+// database connection
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/babble');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -22,8 +26,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+// dynamically include routes (Controller)
+fs.readdirSync('./controllers').forEach(function (file) {
+  if(file.substr(-3) == '.js') {
+      route = require('./controllers/' + file);
+      route.controller(app);
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
