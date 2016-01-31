@@ -7,3 +7,20 @@ https://github.com/sterlingbaldwin/babble.git
 cd babble
 npm install
 npm start
+
+
+# project notes
+Ive decided to use (this guys)[http://timstermatic.github.io/blog/2013/08/17/a-simple-mvc-framework-with-node-and-express/] idea for a node/express MVC.
+
+Folder structure is then laid out
+
+./babble
+  |
+  |-> /controllers  _all controller files_
+  |
+  |-> /views  _all view templates_
+  |
+  |-> /models  _all database models_
+
+
+The app.js loads all controllers, which define all their own routes.
