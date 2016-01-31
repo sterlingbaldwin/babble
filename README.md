@@ -20,15 +20,9 @@ Folder structure is then laid out
 
 > ./babble
 
->  |
-
 >  |-> /controllers  _all controller files_
 
->  |
-
 >  |-> /views  _all view templates_
-
->  |
 
 >  |-> /models  _all database models_
 
