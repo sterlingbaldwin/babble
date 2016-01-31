@@ -10,7 +10,7 @@ npm start
 
 
 # project notes
-Ive decided to use (this guys)[http://timstermatic.github.io/blog/2013/08/17/a-simple-mvc-framework-with-node-and-express/] idea for a node/express MVC.
+Ive decided to use [this guys](http://timstermatic.github.io/blog/2013/08/17/a-simple-mvc-framework-with-node-and-express/) idea for a node/express MVC.
 
 Folder structure is then laid out
 
