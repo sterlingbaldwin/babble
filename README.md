@@ -18,13 +18,19 @@ Ive decided to use [this guys](http://timstermatic.github.io/blog/2013/08/17/a-s
 
 Folder structure is then laid out
 
-> ./babble\s\s
->  |\s\s
->  |-> /controllers  _all controller files_\s\s
->  |\s\s
->  |-> /views  _all view templates_\s\s
->  |\s\s
->  |-> /models  _all database models_\s\s
+> ./babble
+
+>  |
+
+>  |-> /controllers  _all controller files_
+
+>  |
+
+>  |-> /views  _all view templates_
+
+>  |
+
+>  |-> /models  _all database models_
 
 
 The app.js loads all controllers, which define all their own routes.
