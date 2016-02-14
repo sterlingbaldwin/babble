@@ -5,7 +5,8 @@ babble = angular.module('babble', [])
     console.log('working!')
     return
 
-  $scope.register_modal = () ->
+  $scope.register_modal_trigger = () ->
     $('#register_modal').foundation 'reveal', 'open'
+    return
 
 ]

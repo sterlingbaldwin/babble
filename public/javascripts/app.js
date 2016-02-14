@@ -7,8 +7,8 @@
       $scope.init = function() {
         console.log('working!');
       };
-      return $scope.register_modal = function() {
-        return $('#register_modal').foundation('reveal', 'open');
+      return $scope.register_modal_trigger = function() {
+        $('#register_modal').foundation('reveal', 'open');
       };
     }
   ]);
