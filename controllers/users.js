@@ -11,6 +11,7 @@ module.exports.controller = function(app) {
   });
 
   app.post('/user/register', function(req, res){
+    console.log(req.body);
     Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
       if (err) {
           console.log('error creating new account');

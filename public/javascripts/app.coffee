@@ -18,10 +18,11 @@ babble = angular.module('babble', [])
       url: '/user/register'
       method: 'POST'
       data: data
-      }).success(()->
+      headers: {"Content-Type": "application/json"}
+      }).then((response)->
         $('#register_modal').foundation 'reveal', 'open'
         return
-      ).error(()->
+      ).catch((response)->
         console.log 'Error registering user'
         return
       )

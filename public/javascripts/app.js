@@ -18,10 +18,13 @@
         $http({
           url: '/user/register',
           method: 'POST',
-          data: data
-        }).success(function() {
+          data: data,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(function(response) {
           $('#register_modal').foundation('reveal', 'open');
-        }).error(function() {
+        })["catch"](function(response) {
           console.log('Error registering user');
         });
       };
