@@ -39,8 +39,9 @@ app.set('view engine', 'jade');
 // controller setup
 fs.readdirSync('./controllers').forEach(function (file) {
   if(file.substr(-3) == '.js') {
-      route = require('./controllers/' + file);
-      route.controller(app);
+    console.log('registering controller ' + file);
+    route = require('./controllers/' + file);
+    route.controller(app);
   }
 });
 

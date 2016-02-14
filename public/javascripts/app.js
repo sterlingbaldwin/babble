@@ -4,11 +4,26 @@
 
   babble = angular.module('babble', []).controller('BabbleControl', [
     '$scope', '$http', function($scope, $http) {
-      $scope.init = function() {
-        console.log('working!');
-      };
-      return $scope.register_modal_trigger = function() {
+      $scope.init = function() {};
+      $scope.register_modal_trigger = function() {
         $('#register_modal').foundation('reveal', 'open');
+      };
+      return $scope.register = function() {
+        var data;
+        data = {
+          username: $('#reg-username-field').text(),
+          password: $('reg-password-field').text(),
+          email: $('reg-email-field').text()
+        };
+        $http({
+          url: '/user/register',
+          method: 'POST',
+          data: data
+        }).success(function() {
+          $('#register_modal').foundation('reveal', 'open');
+        }).error(function() {
+          console.log('Error registering user');
+        });
       };
     }
   ]);

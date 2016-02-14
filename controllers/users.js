@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Account = require('../models/account');
+var Account  = require('../models/account');
 var passport = require('passport');
 module.exports.controller = function(app) {
 /**
@@ -12,13 +12,20 @@ module.exports.controller = function(app) {
 
   app.post('/user/register', function(req, res){
     Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
-        if (err) {
-            return res.render('register', { account : account });
-        }
-
-        passport.authenticate('local')(req, res, function () {
-            res.redirect('/');
-        });
+      if (err) {
+          console.log('error creating new account');
+          console.log(account);
+          return res.render('register', { account : account });
+      }
+      account.email = req.body.email
+      account.save(function (err, account) {
+        if (err) return console.error(err);
+      });
+      passport.authenticate('local')(req, res, function () {
+          console.log('successfully created account');
+          console.log(account);
+          res.redirect('/');
+      });
     });
   });
 
