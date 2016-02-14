@@ -10,9 +10,9 @@ babble = angular.module('babble', [])
 
   $scope.register = () ->
     data = {
-      username: $('#reg-username-field').text()
-      password: $('reg-password-field').text()
-      email: $('reg-email-field').text()
+      username: $('#reg-username-field').val()
+      password: $('#reg-password-field').val()
+      email: $('#reg-email-field').val()
     }
     $http({
       url: '/user/register'
