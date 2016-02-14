@@ -4,7 +4,28 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/foundation.min.css')
+    script(src='https://code.jquery.com/jquery-2.2.0.js')
     script(src='/javascripts/foundation.min.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js')
+    script(src='/javascripts/app.js')
+    script.
+      $(document).ready(function(){
+        $(document).foundation();
+      });
+
+  body(ng-app="babble" ng-controller="BabbleControl" ng-init="init()")
     
-  body
     block content
+    
+    <!-- div(ng-include="" src="'partials/register_user.html'") -->
+    
+    div(id="register_modal" class="reveal-modal" data-reveal aria-labelledby="register_modal" aria-hidden="true" role="dialog")
+      h2 Register
+      label Email
+        input(type="text" placeholder="email" id="reg-email-field")
+      label Username
+        input(type="text" placeholder="username" id="reg-username-field")
+      label Password
+        input(type="password" placeholder="password" id="reg-password-field")
+      button(class="success round" ng-click="register()") register
+      a(class="close-reveal-modal" aria-label="Close")&#215
