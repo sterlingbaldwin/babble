@@ -8,6 +8,31 @@
       $scope.register_modal_trigger = function() {
         $('#register_modal').foundation('reveal', 'open');
       };
+      $scope.login_modal_trigger = function() {
+        $('#register_modal').foundation('reveal', 'close');
+        $('#login_modal').foundation('reveal', 'open');
+      };
+      $scope.login = function() {
+        var data;
+        data = {
+          username: $('#login-username-field').val(),
+          password: $('#login-password-field').val
+        };
+        $http({
+          data: data,
+          url: 'user/login',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          method: 'POST'
+        }).then(function(res) {
+          console.log('logged in!');
+          return console.log(res);
+        })["catch"](function(res) {
+          console.log('error logging in');
+          return console.log(res);
+        });
+      };
       return $scope.register = function() {
         var data;
         data = {
