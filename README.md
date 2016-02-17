@@ -13,11 +13,12 @@ A forum for chatting, or a chat client for making forums
 
 
 
-# project notes
+# project notes and links
 Ive decided to use [this guys](http://timstermatic.github.io/blog/2013/08/17/a-simple-mvc-framework-with-node-and-express/) idea for a node/express MVC.
 
 working on getting [passport to work](http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/).
 
+[more on passport](https://scotch.io/tutorials/easy-node-authentication-setup-and-local)
 
 Folder structure is then laid out
 

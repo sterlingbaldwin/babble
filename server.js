@@ -50,10 +50,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // controller setup
-fs.readdirSync('./controllers').forEach(function (file) {
+fs.readdirSync('./app/controllers').forEach(function (file) {
   if(file.substr(-3) == '.js') {
     console.log('registering controller ' + file);
-    route = require('./controllers/' + file);
+    route = require('./app/controllers/' + file);
     route.controller(app);
   }
 });
