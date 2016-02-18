@@ -6,25 +6,11 @@ module.exports.controller = function(app) {
   // =====================================
   // REGISTER ============================
   // =====================================
-  app.post('/user/register', function(req, res){
-    console.log(req.body);
-    Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
-      if (err) {
-          console.log('error creating new account');
-          console.log(account);
-          return res.render('register', { account : account });
-      }
-      account.email = req.body.email
-      account.save(function (err, account) {
-        if (err) return console.error(err);
-      });
-      passport.authenticate('local')(req, res, function () {
-          console.log('successfully created account');
-          console.log(account);
-          res.redirect('/');
-      });
-    });
-  });
+    app.post('/user/register', passport.authenticate('local-signup', {
+        successRedirect : '/profile', // redirect to the secure profile section
+        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
 
   // =====================================
   // LOGIN ==============================

@@ -29,12 +29,8 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// passport config
+//import accound model
 var Account = require('./app/models/account');
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

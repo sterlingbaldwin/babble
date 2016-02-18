@@ -1,5 +1,5 @@
 var LocalStrategy   = require('passport-local').Strategy;
-var Account         = require('../app/models/user');
+var Account         = require('../app/models/account');
 
 module.exports = function(passport) {
 
