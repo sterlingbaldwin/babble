@@ -6,7 +6,7 @@ A forum for chatting, or a chat client for making forums
 > https://github.com/sterlingbaldwin/babble.git
 
 > cd babble
-
+> ## CHANGE THE SESSION SECRET!
 > npm install
 
 > npm start

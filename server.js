@@ -20,8 +20,9 @@ var mongoose = require('mongoose');
 mongoose.connect(configDB.url);
 
 //setup express with passport
+require('./config/passport')(passport); // pass passport for configuration
 app.use(require('express-session')({
-    secret: 'keyboard cat',
+    secret: 'ilovescotchscotchyscotchscotch',
     resave: false,
     saveUninitialized: false
 }));
@@ -29,7 +30,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // passport config
-var Account = require('./models/account');
+var Account = require('./app/models/account');
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
@@ -56,7 +57,7 @@ fs.readdirSync('./app/controllers').forEach(function (file) {
   if(file.substr(-3) == '.js') {
     console.log('registering controller ' + file);
     route = require('./app/controllers/' + file);
-    route.controller(app);
+    route.controller(app, passport);
   }
 });
 
