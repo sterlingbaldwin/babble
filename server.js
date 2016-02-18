@@ -1,13 +1,15 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var fs = require('fs');
-var passport = require('passport');
+var express       = require('express');
+var path          = require('path');
+var favicon       = require('serve-favicon');
+var logger        = require('morgan');
+var cookieParser  = require('cookie-parser');
+var bodyParser    = require('body-parser');
+var fs            = require('fs');
+var passport      = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var connect = require('connect');
+var connect       = require('connect');
+var flash         = require('connect-flash');
+var configDB      = require('./config/database.js');
 
 
 
@@ -15,7 +17,7 @@ var app = express();
 
 // database connection
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/babble');
+mongoose.connect(configDB.url);
 
 //setup express with passport
 app.use(require('express-session')({
