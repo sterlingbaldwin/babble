@@ -19,6 +19,7 @@ Ive decided to use [this guys](http://timstermatic.github.io/blog/2013/08/17/a-s
 working on getting [passport to work](http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/).
 
 [more on passport](https://scotch.io/tutorials/easy-node-authentication-setup-and-local)
+[stackoverflow on passport](http://stackoverflow.com/questions/15711127/express-passport-node-js-error-handling)
 
 Folder structure is then laid out
 

@@ -4,7 +4,32 @@
 
   babble = angular.module('babble', []).controller('BabbleControl', [
     '$scope', '$http', function($scope, $http) {
-      $scope.init = function() {};
+      $scope.data = {
+        'status': 'loggedout'
+      };
+      $scope.init = function() {
+        $http({
+          url: '/status',
+          method: 'GET'
+        }).then(function(res) {
+          console.log('got status');
+          console.log(res);
+          $scope.data.status = res.data.status;
+        })["catch"](function(res) {
+          console.log('some issue');
+        });
+      };
+      $scope.logout = function() {
+        $http({
+          url: '/user/logout',
+          method: 'GET'
+        }).then(function(res) {
+          return $scope.data.status = 'loggedout';
+        })["catch"](function(res) {
+          console.log('error logging out');
+          return console.log(res);
+        });
+      };
       $scope.register_modal_trigger = function() {
         $('#register_modal').foundation('reveal', 'open');
       };
