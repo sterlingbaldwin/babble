@@ -1,33 +1,26 @@
-var mongoose = require('mongoose');
-var Account  = require('../models/account');
-var passport = require('passport');
+var mongoose  = require('mongoose');
+var Account   = require('../models/account');
+var passport  = require('passport');
 
 module.exports.controller = function(app) {
 
   // =====================================
   // REGISTER ============================
   // =====================================
-    app.post('/user/register', passport.authenticate('local-signup', {
-      successRedirect : '/profile', // redirect to the secure profile section
-      failureRedirect : '/', // redirect back to the signup page if there is an error
-      failureFlash : true // allow flash messages
-    }));
-
-  // =====================================
-  // LOGIN ==============================
-  // =====================================
-  // app.post('/user/login', passport.authenticate('local-login', {
-  //   successRedirect : '/profile', // redirect to the secure profile section
-  //   failureRedirect : '/', // redirect back to the signup page if there is an error
-  //   failureFlash : true // allow flash messages
-  // }));
-
-  app.post('/user/login', passport.authenticate('local-login', {
+  app.post('/user/register', passport.authenticate('local-signup', {
     successRedirect : '/profile', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
 
+  // =====================================
+  // LOGIN ===============================
+  // =====================================
+  app.post('/user/login', passport.authenticate('local-login', {
+    successRedirect : '/profile', // redirect to the secure profile section
+    failureRedirect : '/', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+  }));
 
   // =====================================
   // LOGOUT ==============================
@@ -37,15 +30,6 @@ module.exports.controller = function(app) {
     res.redirect('/');
   });
 
-  // =====================================
-  // PROFILE LOOKUP ======================
-  // =====================================
-  app.get('/profile', function(req, res){
-    //
-    // Get user information for req.user from
-    //  the DB and send it back
-    //
-  });
 
   function isAuthenticated(req, res){
     // if user is authenticated in the session, carry on

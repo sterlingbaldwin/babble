@@ -1,13 +1,19 @@
-var mongoose = require('mongoose');
+var mongoose  = require('mongoose');
+
 module.exports.controller = function(app) {
-/**
- * a home page route
- */
+
+  // =====================================
+  // Home Page ===========================
+  // =====================================
   app.get('/', function(req, res) {
       // any logic goes here
       res.render('index', {title: "Babble"});
   });
 
+  // =====================================
+  // Status = ============================
+  // returns the status of the user ======
+  // =====================================
   app.get('/status', function(req, res){
     data = {
       'status': 'loggedout'

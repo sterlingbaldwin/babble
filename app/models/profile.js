@@ -16,3 +16,5 @@ var Profile = new Schema({
 Profile.methods.get_group_list = function(){
   return this.subscribed_groups;
 }
+
+module.exports = mongoose.model('Profile', Profile);
