@@ -5,7 +5,7 @@ module.exports.controller = function(app) {
  */
   app.get('/', function(req, res) {
       // any logic goes here
-      res.render('index', {title: "Babble"})
+      res.render('index', {title: "Babble"});
   });
 
   app.get('/status', function(req, res){
@@ -16,5 +16,5 @@ module.exports.controller = function(app) {
       data.status = 'loggedin'
     }
     res.send(data);
-  })
+  });
 }

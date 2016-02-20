@@ -4,8 +4,8 @@ var Schema    = mongoose.Schema;
 
 var Account = new Schema({
   local : {
-    email     : String,
-    password  : String,
+    email     : {type : String, required: true, unique: true },
+    password  : {type : String, required: true },
   },
   google : {
     id        : String,

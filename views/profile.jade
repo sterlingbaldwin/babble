@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  div(ng-controller="ProfileControl" ng-init="init()")
+  h1= title
+  p Welcome #{user.email} to your profile page
+  div(ng-repeat="profile in profile_list")
+    h2 {{profile.name}}
+    p {{profile.rep}}
+    p(ng-repeat="group in profile.subscribed_groups") {{group}}
+  div(ng-show="profile_list.length < 1")
+    p Looks like you dont have any profiles setup, would you like to make one?
+  button(class="success") New Profile
