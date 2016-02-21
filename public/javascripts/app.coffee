@@ -43,12 +43,12 @@ babble = angular.module('babble', [])
 
   $scope.login = () ->
     data = {
-      username: $('#login-username-field').val()
-      password: $('#login-password-field').val
+      email: $('#login-username-field').val()
+      password: $('#login-password-field').val()
     }
     $http({
       data: data
-      url: 'user/login'
+      url: '/user/login'
       headers: {"Content-Type": "application/json"}
       method: 'POST'
       }).then((res) ->
@@ -72,7 +72,7 @@ babble = angular.module('babble', [])
       data: data
       headers: {"Content-Type": "application/json"}
       }).then((response)->
-        $('#register_modal').foundation 'reveal', 'open'
+        $('#register_modal').foundation 'reveal', 'close'
         return
       ).catch((response)->
         console.log 'Error registering user'

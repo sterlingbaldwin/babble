@@ -40,12 +40,12 @@
       $scope.login = function() {
         var data;
         data = {
-          username: $('#login-username-field').val(),
-          password: $('#login-password-field').val
+          email: $('#login-username-field').val(),
+          password: $('#login-password-field').val()
         };
         $http({
           data: data,
-          url: 'user/login',
+          url: '/user/login',
           headers: {
             "Content-Type": "application/json"
           },
@@ -73,7 +73,7 @@
             "Content-Type": "application/json"
           }
         }).then(function(response) {
-          $('#register_modal').foundation('reveal', 'open');
+          $('#register_modal').foundation('reveal', 'close');
         })["catch"](function(response) {
           console.log('Error registering user');
         });
