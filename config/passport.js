@@ -7,7 +7,6 @@ module.exports = function(passport) {
   // passport session setup ==================================================
   // =========================================================================
   // required for persistent login sessions
-
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
