@@ -10,6 +10,7 @@ var passport      = require('passport');
 var connect       = require('connect');
 var flash         = require('connect-flash');
 var configDB      = require('./config/database.js');
+var handlebars    = require('handlebars');
 
 
 
