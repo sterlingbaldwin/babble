@@ -1,18 +1,24 @@
+<link rel='stylesheet', href='/stylesheets/profile.css'>
+
 
 <div ng-controller="ProfileControl" ng-init="init()">
-  <p> Welcome {[{user.local.email}]} to your profile page </p>
-  <div ng-repeat="profile in profile_list">
+  <h3 class="large-offset-1"> Welcome {[{user.local.email}]} to your profile page </h3>
+  <div ng-repeat="profile in profile_list" class="large-4 large-offset-1 columns profile-box" id="{[{profile.name}]}_box">
     <h2> {[{profile.name}]} </h2>
     <p> {[{profile.rep}]} </p>
+    <button ng-click="select_profile(profile)">
+      <span id="{[{profile.name}]}_select_circle"  class="fa fa-circle-o"></span>
+      Select
+    </button>
     <div ng-repeat="group in profile.subscribed_groups")
-      <p>{[{group}]}</p>
+      <p> {[{group}]} </p>
     </div>
   </div>
   <div>
     <p ng-show="profile_list.length < 1">
       Looks like you dont have any profiles setup, would you like to make one?
     </p>
-    <button class="success" ng-click="new_profile_modal_trigger()"> New Profile </button>
+    <button class="success columns" ng-click="new_profile_modal_trigger()"> New Profile </button>
   </div>
   <div ng-include="" src="'partials/new_profile.html'"></div>
 </div>
