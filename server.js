@@ -10,7 +10,7 @@ var passport      = require('passport');
 var connect       = require('connect');
 var flash         = require('connect-flash');
 var configDB      = require('./config/database.js');
-var handlebars    = require('handlebars');
+
 
 
 
@@ -34,8 +34,12 @@ app.use(passport.session());
 var Account = require('./app/models/account');
 
 // view engine setup
+var exphbs  = require('express-handlebars');
+app.engine('handlebars', exphbs({
+    defaultLayout: 'main'
+  }));
+app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

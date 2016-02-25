@@ -8,6 +8,7 @@
         'status': 'loggedout'
       };
       $scope.init = function() {
+        console.log('working');
         $http({
           url: '/status',
           method: 'GET'
