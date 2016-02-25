@@ -12,7 +12,7 @@
           console.log(res);
           $scope.user = res.data.user;
           if(res.data.profile_list && res.data.profile_list.length > 0){
-            $scope.profile_list = res.profile_list;
+            $scope.profile_list = res.data.profile_list;
           }
           return
         })["catch"](function(res) {
@@ -36,14 +36,18 @@
           data: data
         }).then(function(res){
           console.log(res);
-          if(res.data.profile_list.length > 0){
-            $scope.profile_list = res.profile_list;
+          if(res.data.profile_list && res.data.profile_list.length > 0){
+            $scope.profile_list = res.data.profile_list;
           }
           return
         }).catch(function(res){
           console.log(res);
           console.log('failed to make new profile');
         })
+      }
+
+      $scope.fuckme = function(){
+        console.log('fuck me');
       }
 
 

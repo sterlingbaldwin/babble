@@ -1,17 +1,18 @@
 
 <div ng-controller="ProfileControl" ng-init="init()">
-<p Welcome \{{locals.user.local.email}} to your profile page</p>
-<div ng-repeat="profile in profile_list">
-  <h2> \{{profile.name}} </h2>
-  <p> \{{profile.rep}} </p>
-
-  <div ng-repeat="group in profile.subscribed_groups")
-    <p>{{group}}</p>
+  <p> Welcome {[{user.local.email}]} to your profile page </p>
+  <div ng-repeat="profile in profile_list">
+    <h2> {[{profile.name}]} </h2>
+    <p> {[{profile.rep}]} </p>
+    <div ng-repeat="group in profile.subscribed_groups")
+      <p>{[{group}]}</p>
+    </div>
+  </div>
+  <div>
+    <p ng-show="profile_list.length < 1">
+      Looks like you dont have any profiles setup, would you like to make one?
+    </p>
+    <button class="success" ng-click="new_profile_modal_trigger()"> New Profile </button>
+  </div>
+  <div ng-include="" src="'partials/new_profile.html'"></div>
 </div>
-<div ng-show="profile_list.length < 1">
-  <p> Looks like you dont have any profiles setup, would you like to make one? </p>
-  <button class="success" ng-click="new_profile_modal_trigger()")> New Profile </button>
-</div>
-</div>
-
-<div ng-include="" src="'partials/new_profile.html'"></div>

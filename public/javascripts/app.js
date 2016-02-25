@@ -8,7 +8,6 @@
         'status': 'loggedout'
       };
       $scope.init = function() {
-        console.log('working');
         $http({
           url: '/status',
           method: 'GET'
@@ -81,5 +80,10 @@
       };
     }
   ]);
+
+  babble.config(function($interpolateProvider) {
+    $interpolateProvider.startSymbol('{[{');
+    return $interpolateProvider.endSymbol('}]}');
+  });
 
 }).call(this);

@@ -81,3 +81,8 @@ babble = angular.module('babble', ['babble.profile'])
     return
 
 ]
+
+babble.config(($interpolateProvider) ->
+  $interpolateProvider.startSymbol('{[{')
+  $interpolateProvider.endSymbol('}]}')
+)

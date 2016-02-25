@@ -59,17 +59,21 @@ module.exports.controller = function(app) {
       pLog = new Log({
         parent: p._id
       })
+      console.log(p);
       p.save();
       pLog.save();
-      Profile.find({parent_user: req.user._id}, function(err, docs){
+
+      cb = function(err, docs){
         if(err){
           console.log(err);
           res.send('User has no profiles');
         } else {
+          console.log(docs);
           var profile_list = docs;
           res.send(profile_list);
         }
-      });
+      }
+      Profile.find({parent_user: req.user._id}).sort({name: -1}).exec(cb);
     } else {
       res.send('No user found');
     }
