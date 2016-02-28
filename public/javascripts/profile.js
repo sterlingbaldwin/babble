@@ -25,7 +25,19 @@
         element = $('#' + profile.name + '_box');
         element
           .addClass('large-6')
-          .removeClass('large-4')
+          .removeClass('large-4');
+
+        $http({
+          url: '/profile/' + $scope.selected_profile.name + "/log",
+          method: 'GET',
+        }).then(function(res){
+          console.log(res);
+          console.log('success!');
+          $scope.profile_list[$scope.selected_profile].log_items = res.log_items;
+        }).catch(function(res){
+          console.log(res);
+          console.log('fail :(');
+        });
 
       }
 

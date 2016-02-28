@@ -4,3 +4,7 @@
   -webkit-transition: all .5s; /* Safari */
   transition: all .5s;
 }
+
+.log_item_holder {
+  border: 5px dotted green;
+}

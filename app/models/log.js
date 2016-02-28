@@ -3,7 +3,10 @@ var Schema    = mongoose.Schema;
 
 var Log = new Schema({
   parent: { type: Schema.Types.ObjectId, ref: 'Profile' },
-  log_items: [{ type: Schema.Types.ObjectId, ref: 'Log_item' }]
+  items: [{
+    action: { type: String },
+    discussion: { type: Schema.Types.ObjectId, ref: 'Discussion' }
+  }]
 });
 
 Log.methods.get_items = function(){

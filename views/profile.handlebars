@@ -3,12 +3,22 @@
 
 <div ng-controller="ProfileControl" ng-init="init()">
   <h3 class="large-offset-1"> Welcome {[{user.local.email}]} to your profile page </h3>
-  <div ng-repeat="profile in profile_list" class="large-4 large-offset-1 columns profile-box" id="{[{profile.name}]}_box">
+  <div ng-repeat="profile in profile_list" class="large-4 large-offset-1 rows profile-box" id="{[{profile.name}]}_box">
     <h2> {[{profile.name}]} </h2>
     <p> {[{profile.rep}]} </p>
-    <button ng-click="select_profile(profile)">
+    <div ng-show="selected_profile.name == profile.name && profile.log_items" class="log_item_holder">
+      <div class="log_item">
+        <p>{[{log_item.action}]}</p>
+        <button ng-click=""> Discussion </button>
+      </div>
+    </div>
+    <button ng-click="select_profile(profile)" ng-show="selected_profile.name != profile.name">
       <span id="{[{profile.name}]}_select_circle"  class="fa fa-circle-o"></span>
       Select
+    </button>
+    <button ng-show="selected_profile.name == profile.name">
+      <span class="fa-heart"></span>
+      <a href="/profile/userprofile/{[{profile.name}]}">Profile</a>
     </button>
     <div ng-repeat="group in profile.subscribed_groups")
       <p> {[{group}]} </p>

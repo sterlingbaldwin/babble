@@ -1,6 +1,7 @@
 var mongoose  = require('mongoose');
 var Profile   = require('../models/profile');
 var Log       = require('../models/log');
+var Account   = require('../models/account');
 
 module.exports.controller = function(app) {
 
@@ -18,23 +19,80 @@ module.exports.controller = function(app) {
     }
   });
 
+  app.get('/profile/userprofile/:name', function(req, res){
+    console.log(req.params.name);
+  });
+
+  app.get('/profile/:name/log', function(req, res){
+    if(req.user){
+      Profile
+        .find({
+          parent_user: req.user._id
+        })
+        .exec(function(err, docs){
+          if(err){
+            res.send('error:' + err);
+            console.log(err);
+          }
+          if(docs){
+            var access = false;
+            for(profile in docs){
+              if(profile.name == req.params.name){
+                access = true;
+                break;
+              }
+            }
+            if(access){
+              var log_items = [];
+              Log
+                .find({
+                  parent: docs[req.params.name]._id
+                })
+                .exec(function(err, docs){
+                  if(err){
+                    res.send('log lookup failed');
+                    console.log(err);
+                  } else {
+                    if(docs){
+                      console.log(docs[0].log_items);
+                      res.send(docs[0].log_items);
+                    } else {
+                      res.send('no log_items found');
+                    }
+                  }
+                });
+            }
+          } else {
+            res.send('no user found');
+          }
+      });
+    } else {
+      res.send('No log items found');
+    }
+  });
+
   // =====================================
   // Profile List ========================
   // returns a list of a users profiles ==
   // =====================================
   app.get('/profile/list', function(req, res){
     if(req.user){
-      Profile.find({parent_user: req.user._id}, function(err, docs){
-        if(err){
-          console.log(err);
-          res.send('User has no profiles');
-        } else {
-          res.json({
-            profile_list: docs,
-            user: req.user
-          });
-        }
-      });
+      Profile
+        .find({
+          parent_user: req.user._id
+        })
+        .exec(function(err, docs){
+          if(err){
+            console.log(err);
+            res.send('User has no profiles');
+          } else {
+            res.json({
+              profile_list: docs,
+              user: req.user
+            });
+          }
+        });
+
     } else {
       res.send('No user found');
     }
