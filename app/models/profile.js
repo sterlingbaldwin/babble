@@ -8,8 +8,11 @@ var Profile = new Schema({
   subscribed_groups: [{ type: Schema.Types.ObjectId, ref: 'Group' }],
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   rep: { type: Number },
-  profile_log: { type: Schema.Types.ObjectId, ref: 'Log'},
-  notifications: [{ type: Schema.Types.ObjectId, ref: 'Notification'}]
+  notifications: [{
+    // type: String,
+    // content: String,
+    // status: String
+  }]
 });
 
 

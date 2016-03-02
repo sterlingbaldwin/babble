@@ -1,7 +1,8 @@
-var mongoose  = require('mongoose');
-var Profile   = require('../models/profile');
-var Log       = require('../models/log');
-var Account   = require('../models/account');
+var mongoose      = require('mongoose');
+var Profile       = require('../models/profile');
+var Log           = require('../models/log');
+var Account       = require('../models/account');
+
 
 module.exports.controller = function(app) {
 
@@ -24,8 +25,10 @@ module.exports.controller = function(app) {
   });
 
   app.get('/profile/:name/log', function(req, res){
-    if(req.user){
-      Profile
+    console.log('profile request for ' + req.params.name);
+    if(req.user){ //user is logged in
+      console.log(' [+] valid user');
+      Profile //find profiles for the user
         .find({
           parent_user: req.user._id
         })
@@ -35,32 +38,21 @@ module.exports.controller = function(app) {
             console.log(err);
           }
           if(docs){
+            console.log(' [+] found profiles for user');
+            console.log(docs);
             var access = false;
             for(profile in docs){
-              if(profile.name == req.params.name){
-                access = true;
+              if(docs[profile].name == req.params.name){
+                access = profile;
                 break;
               }
             }
             if(access){
-              var log_items = [];
-              Log
-                .find({
-                  parent: docs[req.params.name]._id
-                })
-                .exec(function(err, docs){
-                  if(err){
-                    res.send('log lookup failed');
-                    console.log(err);
-                  } else {
-                    if(docs){
-                      console.log(docs[0].log_items);
-                      res.send(docs[0].log_items);
-                    } else {
-                      res.send('no log_items found');
-                    }
-                  }
-                });
+              console.log(' [+] User has access to profile');
+              res.send(docs[profile].notifications);
+            } else {
+              console.log(' [-] Unable to find profiles for user');
+              res.send('Access denied');
             }
           } else {
             res.send('no user found');
@@ -109,21 +101,46 @@ module.exports.controller = function(app) {
   // input: req.body.name
   app.post('/profile/new', function(req, res){
     if(req.user){
-      var p = new Profile({
-        name: req.body.name,
-        parent_user: req.user._id,
-        rep: 0,
-      });
-      pLog = new Log({
-        parent: p._id
-      })
-      //console.log(p);
-      p.save();
-      pLog.save();
-      var data = {
-        new_profile: p
+      try{
+        var n = {
+          type: 'NewProfile',
+          status: 'unseen',
+          content: 'Welcome to your new profile!'
+        }
+        var p = new Profile({
+          name: req.body.name,
+          parent_user: req.user._id,
+          rep: 0,
+          notifications: [{}]
+        });
+        //p.notifications.push(n);
+        console.log(p);
+        p.save({}, function(args){
+          if(args)
+          console.log(args);
+        });
+
+        n = {
+          type: 'NewProfile',
+          status: 'unseen',
+          content: 'Welcome to your new profile!'
+        }
+        p.notifications.push(n);
+        p.save({}, function(args){
+          if(args)
+          console.log(args);
+        });
+
+        var data = {
+          new_profile: p
+        }
+
+        console.log('Made a new profile!');
+        console.log(data);
+        res.send(data);
+      } catch(error) {
+        console.log(error);
       }
-      res.send(data);
     } else {
       res.send('No user found');
     }

@@ -17,13 +17,11 @@
             .addClass('large-4');
 
         //update the style for the selected profile
-        var element = $('#' + profile.name + '_select_circle');
-        element
+        $('#' + profile.name + '_select_circle')
           .addClass('fa-circle')
           .removeClass('fa-circle-o');
 
-        element = $('#' + profile.name + '_box');
-        element
+        $('#' + profile.name + '_box')
           .addClass('large-6')
           .removeClass('large-4');
 
@@ -33,7 +31,7 @@
         }).then(function(res){
           console.log(res);
           console.log('success!');
-          $scope.profile_list[$scope.selected_profile].log_items = res.log_items;
+          $scope.profile_list[$scope.selected_profile].notifications = res.data;
         }).catch(function(res){
           console.log(res);
           console.log('fail :(');

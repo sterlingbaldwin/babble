@@ -6,20 +6,24 @@
   <div ng-repeat="profile in profile_list" class="large-4 large-offset-1 rows profile-box" id="{[{profile.name}]}_box">
     <h2> {[{profile.name}]} </h2>
     <p> {[{profile.rep}]} </p>
-    <div ng-show="selected_profile.name == profile.name && profile.log_items" class="log_item_holder">
-      <div class="log_item">
-        <p>{[{log_item.action}]}</p>
-        <button ng-click=""> Discussion </button>
+
+    <div ng-show="selected_profile.name == profile.name && profile.notifications" class="log_item_holder">
+      <div class="profile-notification" ng-repeat="n in profile.notifications">
+        <p>{[{n.type}]}</p>
+        <p>{[{n.content}]}</p>
       </div>
     </div>
-    <button ng-click="select_profile(profile)" ng-show="selected_profile.name != profile.name">
+
+    <button ng-click="select_profile(profile)">
       <span id="{[{profile.name}]}_select_circle"  class="fa fa-circle-o"></span>
       Select
     </button>
+
     <button ng-show="selected_profile.name == profile.name">
-      <span class="fa-heart"></span>
-      <a href="/profile/userprofile/{[{profile.name}]}">Profile</a>
+      <span class="fa fa-heart"></span>
+      <a href="/profile/userprofile/{[{profile.name}]}" style="color: white;">Profile</a>
     </button>
+
     <div ng-repeat="group in profile.subscribed_groups")
       <p> {[{group}]} </p>
     </div>
