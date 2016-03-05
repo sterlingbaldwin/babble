@@ -1,6 +1,11 @@
 
   angular.module('babble.profile', []).controller('ProfileControl', [
     '$scope', '$http', function($scope, $http) {
+      // see: http://stackoverflow.com/a/33825763/4508247
+      Array.prototype.getItemByParam = function(paramPair) {
+        var key = Object.keys(paramPair)[0];
+        return this.find(function(item){return ((item[key] == paramPair[key]) ? true: false)});
+      }
 
       $scope.profile_list = [];
 
@@ -25,17 +30,26 @@
           .addClass('large-6')
           .removeClass('large-4');
 
-        $http({
-          url: '/profile/' + $scope.selected_profile.name + "/log",
-          method: 'GET',
-        }).then(function(res){
-          console.log(res);
-          console.log('success!');
-          $scope.profile_list[$scope.selected_profile].notifications = res.data;
-        }).catch(function(res){
-          console.log(res);
-          console.log('fail :(');
-        });
+        // $http({
+        //   url: '/profile/' + $scope.selected_profile.name + "/log",
+        //   method: 'GET',
+        // }).then(function(res){
+        //   console.log(res);
+        //   console.log('success!');
+        //   var notes = []
+        //   for(note in res.data){
+        //     if(res.data[note]){
+        //       notes.push(res.data[note]);
+        //     }
+        //   }
+        //   // $scope.profile_list[$scope.selected_profile].notifications = notes;
+        //   $scope.profile_list.getIemtByParam({
+        //     name: $scope.selected_profile.name
+        //   });
+        // }).catch(function(res){
+        //   console.log(res);
+        //   console.log('fail :(');
+        // });
 
       }
 
@@ -61,6 +75,32 @@
         $('#new_profile_modal').foundation('reveal', 'open');
       }
 
+      $scope.remove_profile_modal_trigger = function(){
+        $('#remove_profile_confirm_modal').foundation('reveal', 'open');
+      }
+
+      $scope.delete_profile = function(){
+        $http({
+          url: '/profile/delete',
+          method: 'POST',
+          data: {
+            _id: $scope.selected_profile._id
+          }
+        })
+        .then(function(res){
+          for(p in $scope.profile_list){
+            if($scope.profile_list[p].name == $scope.selected_profile.name){
+              console.log($scope.profile_list[p]);
+              $scope.profile_list.splice(p, 1);
+            }
+          }
+        })
+        .catch(function(res){
+          console.log(res);
+        });
+        $('#remove_profile_confirm_modal').foundation('reveal', 'close');
+      }
+
       $scope.new_profile = function(){
         data = {
           name: $('#new-profile-name-field').val()
@@ -74,6 +114,7 @@
           if(res.data.new_profile){
             $scope.profile_list.push(res.data.new_profile);
           }
+          $('#new_profile_modal').foundation('reveal', 'close');
           return
         }).catch(function(res){
           console.log(res);

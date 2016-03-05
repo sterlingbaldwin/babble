@@ -52,7 +52,8 @@
           method: 'POST'
         }).then(function(res) {
           console.log('logged in!');
-          return console.log(res);
+          console.log(res);
+          return window.location.href = '/profile';
         })["catch"](function(res) {
           console.log('error logging in');
           return console.log(res);

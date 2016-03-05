@@ -14,14 +14,22 @@
       </div>
     </div>
 
+    {{!-- Selects profile from profile_list --}}
     <button ng-click="select_profile(profile)">
       <span id="{[{profile.name}]}_select_circle"  class="fa fa-circle-o"></span>
       Select
     </button>
 
+    {{!-- If profile is selected, goes to that profiles view page --}}
     <button ng-show="selected_profile.name == profile.name">
       <span class="fa fa-heart"></span>
-      <a href="/profile/userprofile/{[{profile.name}]}" style="color: white;">Profile</a>
+      <a href="/profile/{[{profile.name}]}/view" style="color: white;">Profile</a>
+    </button>
+
+    {{!-- Remove the profile --}}
+    <button ng-click="remove_profile_modal_trigger()" ng-show="selected_profile.name == profile.name">
+      <span class="fa fa-user-times"></span>
+      Remove
     </button>
 
     <div ng-repeat="group in profile.subscribed_groups")
@@ -35,4 +43,5 @@
     <button class="success columns" ng-click="new_profile_modal_trigger()"> New Profile </button>
   </div>
   <div ng-include="" src="'partials/new_profile.html'"></div>
+  <div ng-include="" src="'partials/remove_profile.html'"></div>
 </div>

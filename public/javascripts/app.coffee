@@ -54,6 +54,7 @@ babble = angular.module('babble', ['babble.profile'])
       }).then((res) ->
         console.log 'logged in!'
         console.log res
+        window.location.href = '/profile'
       ).catch((res) ->
         console.log 'error logging in'
         console.log res

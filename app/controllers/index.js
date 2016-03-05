@@ -10,6 +10,10 @@ module.exports.controller = function(app) {
       res.render('index', {title: "Babble"});
   });
 
+  app.get('/side-bar', function(req, res){
+    res.render('side-bar-ex', {});
+  })
+
   // =====================================
   // Status = ============================
   // returns the status of the user ======

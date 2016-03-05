@@ -20,8 +20,36 @@ module.exports.controller = function(app) {
     }
   });
 
-  app.get('/profile/userprofile/:name', function(req, res){
+  app.get('/profile/:name/view', function(req, res){
     console.log(req.params.name);
+    if(req.user){
+      Profile
+        .find({
+          parent_user: req.user._id
+        })
+        .exec(function(err, docs){
+          if(docs){
+            var access = false;
+            for(profile in docs){
+              if(docs[profile].name == req.params.name){
+                access = profile;
+                break;
+              }
+            }
+            if(access){
+              res.render('profile_view', {
+                profile: docs[profile]
+              });
+            } else {
+              res.render('index');
+            }
+          } else {
+            res.render('index');
+          }
+        })
+    } else {
+      res.render('index');
+    }
   });
 
   app.get('/profile/:name/log', function(req, res){
@@ -90,6 +118,54 @@ module.exports.controller = function(app) {
     }
   });
 
+
+
+  // ====================================
+  // Profile Delete ========================
+  // Deletes the selected profile
+  //=====================================
+  // input: req.user <- the user
+  //        req.body._id <- the id of the profile to delete
+  app.post('/profile/delete', function(req, res){
+    console.log('BODY');
+    console.log(req.body);
+    if(req.user){
+      console.log('USER');
+      console.log(req.user);
+      Profile
+        .findOne({
+          _id: req.body._id
+        })
+        .exec(function(err, profile){
+          try {
+            if(profile){
+              console.log('profile');
+              console.log(profile);
+              console.log("profile.parent_user " + profile.parent_user + ' = ' + req.user._id + ' req.user._id');
+              console.log(profile.parent_user.toString() == req.user._id.toString());
+              console.log(typeof profile.parent_user);
+              console.log(typeof req.user._id);
+
+              if(profile.parent_user.toString() == req.user._id.toString()){
+                console.log('removing');
+                profile.remove();
+                res.send('Successfully removed profile ');
+                return
+              }
+            } else {
+              res.sendStatus(500);
+            }
+          } catch (e) {
+            console.log(e);
+          } finally {
+
+          }
+        });
+    } else {
+      res.redirect('/');
+    }
+  });
+
   // ====================================
   // Profile New ========================
   // Creates a new profile and populates
@@ -123,7 +199,7 @@ module.exports.controller = function(app) {
         n = {
           type: 'NewProfile',
           status: 'unseen',
-          content: 'Welcome to your new profile!'
+          content: 'Welcome ' + req.user.local.email + ' to your new profile ' + p.name + '!'
         }
         p.notifications.push(n);
         p.save({}, function(args){
