@@ -26,6 +26,7 @@ babble = angular.module('babble', ['babble.profile'])
       method: 'GET'
     }).then((res) ->
       $scope.data.status = 'loggedout'
+      window.location.href = '/'
     ).catch((res) ->
       console.log 'error logging out'
       console.log res
