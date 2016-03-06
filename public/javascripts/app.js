@@ -24,7 +24,8 @@
           url: '/user/logout',
           method: 'GET'
         }).then(function(res) {
-          return $scope.data.status = 'loggedout';
+          $scope.data.status = 'loggedout';
+          return window.location.href = '/';
         })["catch"](function(res) {
           console.log('error logging out');
           return console.log(res);

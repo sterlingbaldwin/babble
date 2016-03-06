@@ -1,16 +1,19 @@
 <nav class="top-bar" data-topbar role="navigation">
   <ul>
     <section class="top-bar-section">
-      <section class="left-small">
-        <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
-      </section>
       <ul class="left">
         <li class="active">
           <a href="JavaScript:void(0)"> home </a>
         </li>
         <li>
-          <a href="JavaScript:void(0)" ng-click="login_modal_trigger()" ng-show="data.status == 'loggedout'"><span class="fa fa-user"> Log In </a>
-          <a href="JavaScript:void(0)" ng-click="logout()" ng-show="data.status == 'loggedin'"><span class="fa fa-user"> Log Out </a>
+          <a href="JavaScript:void(0)" ng-click="login_modal_trigger()" ng-show="data.status == 'loggedout'">
+            <span class="fa fa-user">
+            Log In
+          </a>
+          <a href="JavaScript:void(0)" ng-click="logout()" ng-show="data.status == 'loggedin'">
+            <span class="fa fa-user">
+            Log Out
+          </a>
         </li>
       </ul>
       <ul class="right">
