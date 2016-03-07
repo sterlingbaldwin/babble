@@ -1,10 +1,4 @@
 .profile-box {
   border: 1px solid black;
   border-radius: 2em;
-  -webkit-transition: all .5s; /* Safari */
-  transition: all .5s;
-}
-
-.log_item_holder {
-  border: 5px dotted green;
 }

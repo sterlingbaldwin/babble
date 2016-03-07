@@ -1,0 +1,41 @@
+@import url(//fonts.googleapis.com/css?family=Roboto:400,500,300,100,700,900);
+html, body {
+  background: #FAFAFA!important; }
+
+.card {
+  font-family: 'Roboto', sans-serif!important;
+  overflow: hidden!important;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)!important;
+  color: #272727!important;
+  -webkit-transition: all .5s ease-out; /* Safari */
+  transition: all .5s ease-out;
+  margin-bottom: 2em;}
+  .card .title {
+    line-height: 3rem!important;
+    font-size: 1.5rem!important;
+    font-weight: 300!important; }
+  .card .content {
+    padding: 1.3rem!important;
+    font-weight: 300!important;
+    border-radius: 0 0 2px 2px!important; }
+  .card p {
+    margin: 0!important; }
+  .card .action {
+    border-top: 1px solid rgba(160, 160, 160, 0.2)!important;
+    padding: 1.3rem!important; }
+  .card a {
+    color: #ffab40!important;
+    margin-right: 1.3rem!important;
+    transition: color 0.3s ease!important;
+    text-transform: uppercase!important;
+    text-decoration: none!important; }
+  .card .image {
+    position: relative!important; }
+    .card .image .title {
+      position: absolute!important;
+      bottom: 0!important;
+      left: 0!important;
+      padding: 1.3rem!important;
+      color: #fff!important; }
+    .card .image img {
+      border-radius: 2px 2px 0 0!important; }

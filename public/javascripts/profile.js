@@ -17,7 +17,7 @@
         $('.fa-circle')
           .removeClass('fa-circle')
           .addClass('fa-circle-o')
-          .parent().parent()
+          .parents('.card')
             .removeClass('large-6')
             .addClass('large-4');
 
