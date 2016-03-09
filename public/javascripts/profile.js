@@ -29,28 +29,6 @@
         $('#' + profile.name + '_box')
           .addClass('large-6')
           .removeClass('large-4');
-
-        // $http({
-        //   url: '/profile/' + $scope.selected_profile.name + "/log",
-        //   method: 'GET',
-        // }).then(function(res){
-        //   console.log(res);
-        //   console.log('success!');
-        //   var notes = []
-        //   for(note in res.data){
-        //     if(res.data[note]){
-        //       notes.push(res.data[note]);
-        //     }
-        //   }
-        //   // $scope.profile_list[$scope.selected_profile].notifications = notes;
-        //   $scope.profile_list.getIemtByParam({
-        //     name: $scope.selected_profile.name
-        //   });
-        // }).catch(function(res){
-        //   console.log(res);
-        //   console.log('fail :(');
-        // });
-
       }
 
       $scope.init = function() {

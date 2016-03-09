@@ -2,7 +2,7 @@
 (function() {
   var babble;
 
-  babble = angular.module('babble', ['babble.profile']).controller('BabbleControl', [
+  babble = angular.module('babble', ['babble.profile', 'babble.profile_view']).controller('BabbleControl', [
     '$scope', '$http', function($scope, $http) {
       $scope.data = {
         'status': 'loggedout'

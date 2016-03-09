@@ -1,15 +1,15 @@
 @import url(//fonts.googleapis.com/css?family=Roboto:400,500,300,100,700,900);
-html, body {
-  background: #FAFAFA!important; }
 
 .card {
+  background: #FAFAFA;
   font-family: 'Roboto', sans-serif!important;
   overflow: hidden!important;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)!important;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.6), 0 2px 10px 0 rgba(0, 0, 0, 0.2)!important;
   color: #272727!important;
   -webkit-transition: all .5s ease-out; /* Safari */
   transition: all .5s ease-out;
-  margin-bottom: 2em;}
+  margin: 2em;
+  padding: .5em;}
   .card .title {
     line-height: 3rem!important;
     font-size: 1.5rem!important;
