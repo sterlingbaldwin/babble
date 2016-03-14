@@ -1,3 +1,26 @@
 <div class="row">
-  <h1>Groups baby!</h1>
+  <div ng-show="group_list && group_list.length == 0">
+    <h1>No groups!</h1>
+    <p>
+      Looks like you're not subscribed to any groups, maybe
+      <a href="" ng-click='create_group_trigger()'>
+        create a group
+      </a>
+      or search for a
+      <a href="">
+        public group
+      </a>
+    </p>
+  </div>
+  <div class="card" ng-repeat="group in group_list">
+    <h2>
+      {[{group.name}]}
+    </h2>
+    <p>
+      {[{group.description}]}
+    </p>
+    <p ng-show="group.unseen == true">
+      Unread discussions
+    </p>
+  </div>
 </div>
