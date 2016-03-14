@@ -12,7 +12,8 @@ var Profile = new Schema({
     // type: String,
     // content: String,
     // status: String
-  }]
+  }],
+  friend_list: [{ type: Schema.Types.ObjectId, ref: 'Profile' }]
 });
 
 
