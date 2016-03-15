@@ -34,8 +34,8 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-//import accound model
-var Account = require('./app/models/account');
+//import account model
+//var Account = require('./app/models/account');
 
 // view engine setup
 var exphbs  = require('express-handlebars');
