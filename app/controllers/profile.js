@@ -2,6 +2,7 @@ var mongoose      = require('mongoose');
 var Profile       = require('../models/profile');
 var Log           = require('../models/log');
 var Account       = require('../models/account');
+var Group         = require('../models/group');
 
 
 module.exports.controller = function(app) {
@@ -18,6 +19,111 @@ module.exports.controller = function(app) {
     } else{
       res.redirect('/');
     }
+  });
+
+  app.get('/profile/get_group_list/:name', function(req, res){
+    if(!req.user){
+      res.send('No user found');
+    } else {
+      Profile
+        .find({
+          parent_user: req.user._id
+        })
+        .exec(function(err, docs){
+          if(docs){
+            var access = false;
+            for(profile in docs){
+              if(docs[profile].name == req.params.name){
+                access = profile;
+                break;
+              }
+            }
+            if(access){
+              res.send(docs[access].subscribed_groups);
+              // Group
+              //   .find({
+              //
+              //   })
+              //   .exec(function(err, docs){
+              //
+              //   })
+            } else {
+              res.render('index');
+            }
+          } else {
+            res.render('index');
+          }
+      });
+    }
+  });
+
+  app.get('/profile/:name/friends_list', function(req, res){
+    friends_list = [];
+    Profile
+      .find({
+        'name' : req.params.name
+      })
+      .exec(function(err, docs){
+        if(err){
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        if(!docs){
+          console.log('No profile found');
+          res.send('no profile matches name');
+          return;
+        }
+        for(i in docs){
+          Profile
+            .findById({
+              docs[i]
+            }).exec(function(err, doc){
+              friends_list.push({
+                doc._id : doc.name
+              });
+            });
+        }
+        res.send(friends_list);
+      });
+  });
+
+  app.post('/profile/:name/add_friend/:friend_id', function(req, res){
+    Profile
+      .findOne({
+        'name': req.params.name
+      }).exec(function(err, doc){
+        if(err){
+          console.log(err);
+          res.sendStatus(500);
+        }
+        doc.friend_list.push(req.params.friend_id);
+        res.send('Added friend to list');
+      });
+  });
+
+  app.post('/profile/:name/remove_friend/:friend_id', function(req, res){
+    Profile
+      .findOne({
+        'name': req.params.name
+      }).exec(function(err, doc){
+        if(err){
+          console.log(err);
+          res.sendStatus(500);
+        }
+        var found = false;
+        for(i in doc.friend_list){
+          if(doc.friend_list[i] == req.params.friend_id){
+            doc.friend_list.splice(i, 1);
+            found = true;
+          }
+        }
+        if(found){
+          res.send('Removed profile from friend_list');
+        } else {
+          res.send('Unable to find profile to remove from friend_list');
+        }
+      });
   });
 
   app.get('/profile/:name/view', function(req, res){
@@ -139,13 +245,6 @@ module.exports.controller = function(app) {
         .exec(function(err, profile){
           try {
             if(profile){
-              console.log('profile');
-              console.log(profile);
-              console.log("profile.parent_user " + profile.parent_user + ' = ' + req.user._id + ' req.user._id');
-              console.log(profile.parent_user.toString() == req.user._id.toString());
-              console.log(typeof profile.parent_user);
-              console.log(typeof req.user._id);
-
               if(profile.parent_user.toString() == req.user._id.toString()){
                 console.log('removing');
                 profile.remove();
