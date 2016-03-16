@@ -1,7 +1,10 @@
 <div id="group_create_modal" class="reveal-modal" data-reveal aria-labelledby="group_create_modal" aria-hidden="true" role="dialog">
-   <input type="text" placeholder="Group Name"></input>
-   <p ng-repeat="friend in friend_list" ng-click="select_friend(friend)">{[{friend}]}</p>
-   <button ng-click="select_friends()">Add friends</button>
-   <button class="success" ng-click="create_group()">Create Group</button>
+   <input class="row" type="text" placeholder="Group Name" id="new_group_name"></input>
+   <p class="row" ng-repeat="friend in friend_list" ng-click="select_friend(friend)" id="{[{friend}]}_select">
+     {[{friend}]}
+   </p>
+   <button class="row" ng-click="get_friends()">Add friends</button>
+   <input class="row" type="radio" id="create_group_privacy_radio">private group?</input>
+   <button class="row" class="success" ng-click="create_group()">Create Group</button>
    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>

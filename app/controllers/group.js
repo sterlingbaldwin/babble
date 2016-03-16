@@ -1,11 +1,9 @@
 var Group       = require('../models/group');
 var Discussion  = require('../models/discussion');
-
+var Profile     = require('../models/profile');
 
 module.exports.controller = function(app) {
 
-
-  //TODO: return group info
   app.get('/group/:name', function(req, res){
     Group
       .findOne({
@@ -24,7 +22,6 @@ module.exports.controller = function(app) {
   });
 
 
-  //TODO: create new group
   /*
   required input ->  name of profile making create request, sub_names
                      name of the new group, group_name
@@ -33,6 +30,7 @@ module.exports.controller = function(app) {
   */
   app.post('/group/create', function(req, res){
     if(!req.user || !req.body.group_name || !req.body.sub_names){
+      console.log(req.body);
       res.send('Invalid group create request');
       return;
     }
@@ -51,22 +49,23 @@ module.exports.controller = function(app) {
         console.log(err);
         res.sendStatus(500);
       }
-      for(p in sub_names){
-        console.log('Adding ' + item + ' to ' + sub_names[p] + 's list of subscribed_groups');
+      for(p in req.body.sub_names){
+        console.log('Adding ' + item + ' to ' + req.body.sub_names[p] + 's list of subscribed_groups');
         Profile
           .update({
-            'name': sub_names[p]
+            'name': req.body.sub_names[p]
           }, {
             $push: {
               subscribed_groups: item._id
             }
+          }, function(args){
+            console.log(args);
           });
       }
     });
-    res.send('Successfully created group');
+    res.send(g);
   });
 
-  //TODO: create new discussion in the group
   app.post('/group/:name/new_discussion', function(req, res){
     if(!req.user){
       res.send('Invalid new_discussion request');
@@ -98,7 +97,6 @@ module.exports.controller = function(app) {
       });
   })
 
-  //TODO: destroy group
   app.post('/group/:name/delete', function(req, res){
     if(!req.user){
       res.send('Invalid group delete request');
@@ -109,7 +107,7 @@ module.exports.controller = function(app) {
       }, function(args){
         console.log('Removed group');
         console.log(args);
-      })
-  })
+      });
+  });
 
 }

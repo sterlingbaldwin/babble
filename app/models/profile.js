@@ -3,7 +3,7 @@ var Schema    = mongoose.Schema;
 
 
 var Profile = new Schema({
-  name: { type: String },
+  name: { type: String, unique: true },
   parent_user: { type: Schema.Types.ObjectId, ref: 'Account' },
   subscribed_groups: [{ type: Schema.Types.ObjectId, ref: 'Group' }],
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],

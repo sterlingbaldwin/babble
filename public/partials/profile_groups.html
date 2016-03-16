@@ -1,8 +1,10 @@
 <div class="row">
-  <div ng-show="group_list && group_list.length == 0">
-    <h1>No groups!</h1>
-    <p>
-      Looks like you're not subscribed to any groups, maybe
+  <div>
+    <div class="" ng-show="group_list && group_list.length == 0">
+      <h1>No groups!</h1>
+      <p>
+        Looks like you're not subscribed to any groups, maybe
+    </div>
       <a href="" ng-click='create_group_trigger()'>
         create a group
       </a>
@@ -13,6 +15,7 @@
     </p>
   </div>
   <div class="card" ng-repeat="group in group_list">
+    {[{group}]}
     <h2>
       {[{group.name}]}
     </h2>

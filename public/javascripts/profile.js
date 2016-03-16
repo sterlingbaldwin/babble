@@ -1,11 +1,6 @@
 
 angular.module('babble.profile', []).controller('ProfileControl', [
   '$scope', '$http', function($scope, $http) {
-    // see: http://stackoverflow.com/a/33825763/4508247
-    Array.prototype.getItemByParam = function(paramPair) {
-      var key = Object.keys(paramPair)[0];
-      return this.find(function(item){return ((item[key] == paramPair[key]) ? true: false)});
-    }
 
     $scope.profile_list = [];
 
