@@ -33,3 +33,7 @@ Folder structure is then laid out
 
 
 The app.js loads all controllers, which define all their own routes.
+
+# notes
+
+select green: #388E3C
