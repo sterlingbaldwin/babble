@@ -1,6 +1,7 @@
 var Group       = require('../models/group');
 var Discussion  = require('../models/discussion');
 var Profile     = require('../models/profile');
+var Log         = require('../models/log');
 
 module.exports.controller = function(app) {
 
@@ -27,42 +28,71 @@ module.exports.controller = function(app) {
                      name of the new group, group_name
   optional input ->  list of users to add to group, sub_names
                      privacy setting (defaults to private), privacy
+                     description of the group, group_description
   */
   app.post('/group/create', function(req, res){
+
     if(!req.user || !req.body.group_name || !req.body.sub_names){
       console.log(req.body);
       res.send('Invalid group create request');
       return;
     }
     var privacy = true;
-    if(req.body.privacy){
+    if(typeof req.body.privacy !== 'undefined'){
       privacy = req.body.privacy;
     }
 
-    g = new Group({
-      name: req.body.group_name,
-      privacy: privacy,
-      subscribed_profiles: req.body.sub_names
-    });
-    g.save(function(err, item){
-      if(err){
-        console.log(err);
-        res.sendStatus(500);
-      }
-      for(p in req.body.sub_names){
-        console.log('Adding ' + item + ' to ' + req.body.sub_names[p] + 's list of subscribed_groups');
-        Profile
-          .update({
-            'name': req.body.sub_names[p]
-          }, {
-            $push: {
-              subscribed_groups: item._id
-            }
-          }, function(args){
-            console.log(args);
-          });
-      }
-    });
+    var description = '';
+    if(!req.body.group_description){
+      description = 'A new group';
+    } else {
+      description = req.body.group_description;
+    }
+
+    try {
+      g = new Group({
+        name: req.body.group_name,
+        privacy: privacy,
+        subscribed_profiles: req.body.sub_names,
+        description: description
+      });
+      l = new Log({
+        parent: g._id
+      });
+      d = new Discussion({
+        parent_id: l._id
+      });
+      d.save();
+      l.items.push({
+        action: 'Group Created',
+        discussion: d._id
+      });
+      l.save();
+      g.log = l._id;
+      g.save(function(err, item){
+        if(err){
+          console.log(err);
+          res.sendStatus(500);
+        }
+        for(p in req.body.sub_names){
+          console.log('Adding ' + item + ' to ' + req.body.sub_names[p] + 's list of subscribed_groups');
+          Profile
+            .update({
+              'name': req.body.sub_names[p]
+            }, {
+              $push: {
+                subscribed_groups: item._id
+              }
+            }, function(args){
+              console.log(args);
+            });
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+
+    }
     res.send(g);
   });
 
