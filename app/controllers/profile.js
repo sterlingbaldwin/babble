@@ -3,7 +3,7 @@ var Profile       = require('../models/profile');
 var Log           = require('../models/log');
 var Account       = require('../models/account');
 var Group         = require('../models/group');
-
+var async         = require('async');
 
 module.exports.controller = function(app) {
 
@@ -31,6 +31,7 @@ module.exports.controller = function(app) {
         })
         .exec(function(err, docs){
           if(docs){
+            console.log(docs);
             var access = false;
             for(profile in docs){
               if(docs[profile].name == req.params.name){
@@ -39,14 +40,33 @@ module.exports.controller = function(app) {
               }
             }
             if(access){
-              res.send(docs[access].subscribed_groups);
-              // Group
-              //   .find({
-              //
-              //   })
-              //   .exec(function(err, docs){
-              //
-              //   })
+              group_info = [];
+              calls = [];
+              console.log('Pushing into call list');
+              docs[access].subscribed_groups.forEach(function(group){
+                calls.push(function(cb){
+                  Group
+                    .findById(group)
+                    .exec(function(err, doc){
+                      console.log('pushing into group_info');
+                      console.log(doc);
+                      group_info.push(doc);
+                      cb();
+                    });
+                });
+              });
+              console.log('About to start async calls');
+              async.parallel(calls, function(err, result){
+                if(err){
+                  console.log(err);
+                  res.sendStatus(500);
+                  return
+                }
+                console.log('SENDING RESPONSE');
+                console.log(group_info);
+                res.send(group_info);
+              });
+
             } else {
               res.render('index');
             }
@@ -76,12 +96,12 @@ module.exports.controller = function(app) {
         }
         for(i in docs){
           Profile
-            .findById({
-              docs[i]
-            }).exec(function(err, doc){
-              friends_list.push({
-                doc._id : doc.name
-              });
+            .findById(docs[i])
+            .exec(function(err, doc){
+              if(err){
+                console.log(err);
+              }
+              friends_list.push(doc);
             });
         }
         res.send(friends_list);
