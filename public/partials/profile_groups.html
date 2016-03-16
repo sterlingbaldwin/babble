@@ -1,4 +1,17 @@
 <div class="row">
+  <div class="card group_card" ng-repeat="group in group_list">
+    <div class="" style="border: 4px solid white; padding: 1em;">
+      <h2>
+        {[{group.name}]}
+      </h2>
+      <p>
+        {[{group.description}]}
+      </p>
+      <p ng-show="group.unseen == true">
+        Unread discussions
+      </p>
+    </div>
+  </div>
   <div>
     <div class="" ng-show="group_list && group_list.length == 0">
       <h1>No groups!</h1>
@@ -12,18 +25,6 @@
       <a href="">
         public group
       </a>
-    </p>
-  </div>
-  <div class="card" ng-repeat="group in group_list">
-    {[{group}]}
-    <h2>
-      {[{group.name}]}
-    </h2>
-    <p>
-      {[{group.description}]}
-    </p>
-    <p ng-show="group.unseen == true">
-      Unread discussions
     </p>
   </div>
 </div>

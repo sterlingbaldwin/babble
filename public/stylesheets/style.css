@@ -12,3 +12,7 @@ a {
 .span-padding {
   padding-right: 10px;
 }
+
+.group_card:hover {
+  background-color: #388E3C!important;
+}

@@ -2,7 +2,7 @@ var mongoose  = require('mongoose');
 var Schema    = mongoose.Schema;
 
 var Log = new Schema({
-  parent: { type: Schema.Types.ObjectId, ref: 'Profile' },
+  parent: { type: Schema.Types.ObjectId, ref: 'Group' },
   items: [{
     action: { type: String },
     discussion: { type: Schema.Types.ObjectId, ref: 'Discussion' }

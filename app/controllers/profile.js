@@ -64,7 +64,7 @@ module.exports.controller = function(app) {
                 }
                 console.log('SENDING RESPONSE');
                 console.log(group_info);
-                res.send(group_info);
+                res.send(group_info.sort(Group.compare));
               });
 
             } else {
