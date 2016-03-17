@@ -15,4 +15,6 @@ a {
 
 .group_card:hover {
   background-color: #388E3C!important;
+  cursor: pointer;
+  cursor: hand;
 }

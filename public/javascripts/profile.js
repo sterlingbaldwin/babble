@@ -4,6 +4,11 @@ angular.module('babble.profile', []).controller('ProfileControl', [
 
     $scope.profile_list = [];
 
+    $scope.link_to_profile = function(){
+      window.location.href="/profile/" + $scope.selected_profile.name + "/view"
+    }
+
+
     $scope.select_profile = function(profile){
       console.log(profile);
       $scope.selected_profile = profile;

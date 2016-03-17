@@ -1,6 +1,5 @@
-var mongoose  = require('mongoose');
-var Schema    = mongoose.Schema;
-
+var mongoose    = require('mongoose');
+var Schema      = mongoose.Schema;
 
 var Group = new Schema({
   subscribed_profiles: [{ type: String }],
@@ -20,5 +19,7 @@ Group.method.compare = function(a,b) {
   else
     return 0;
 }
+
+
 
 module.exports = mongoose.model('Group', Group);

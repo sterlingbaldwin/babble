@@ -20,6 +20,14 @@ var app = express();
 var server   = require('http').Server(app);
 var io       = require('socket.io')(server);
 
+// io.on('connection', function(socket){
+//   socket.on('new:comment',{
+//
+//   })
+// });
+
+
+
 // database connection
 var mongoose = require('mongoose');
 mongoose.connect(configDB.url);

@@ -1,11 +1,16 @@
 var mongoose  = require('mongoose');
 var Schema    = mongoose.Schema;
+var markdown  = require('markdown').markdown;
 
 var Comment = new Schema({
-  child_content: { type: Schema.types.ObjectId, ref: 'Content' },
-  parent_profile: { type: Schema.types.ObjectId, ref: 'Profile' },
-  parent_comment: { type: Schema.types.ObjectId, ref: 'Comment'},
-  comment_list: [{ type: Schema.types.ObjectId, ref: 'Comment'}]
+  content: { type: String },
+  parent_profile: { type: Schema.Types.ObjectId, ref: 'Profile' }, //posters profile
+  parent_comment: { type: Schema.Types.ObjectId }, //pointer to comment or discussion
+  comment_list: [{ type: Schema.Types.ObjectId, ref: 'Comment'}] //children comments
 });
+
+Comment.methods.render = function(){
+  return markdown.toHTML(this.content);
+}
 
 module.exports = mongoose.model('Comment', Comment);

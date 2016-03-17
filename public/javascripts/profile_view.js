@@ -7,10 +7,30 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       $scope.selected_friends = [];
       $scope.group_list = [];
       $scope.friend_list = [];
+      $scope.public_group_list = [];
+      $scope.selected_group = '';
     }
 
     $scope.create_group_trigger = function(){
       $("#group_create_modal").foundation("reveal", "open");
+    }
+
+    $scope.select_group = function(group){
+      if(group._id == $scope.selected_group){
+        return;
+      }
+      console.log(group);
+      $scope.selected_group = group._id;
+      $scope.group_keys = Object.keys(group);
+      $http({
+        url: '/group/' + group._id + '/get_discussion_list',
+        method: 'GET'
+      }).then(function(res){
+        console.log(res);
+
+      }).catch(function(res){
+        console.log(res);
+      });
     }
 
     $scope.group_compare = function(a,b) {
@@ -55,6 +75,19 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       }).then(function(res){
         $scope.friend_list = res.data;
         console.log(res);
+      }).catch(function(res){
+        console.log(res);
+      });
+    }
+
+    $scope.public_group_search = function(){
+      $('#public_group_search_modal').foundation('reveal', 'open');
+      $http({
+        url: '/groups/public_group_search',
+        method: 'GET'
+      }).then(function(res){
+        console.log(res);
+        $scope.public_group_list = res.data;
       }).catch(function(res){
         console.log(res);
       });

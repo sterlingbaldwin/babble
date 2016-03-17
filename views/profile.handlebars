@@ -19,32 +19,32 @@
       </div>
 
       {{!-- Selects profile from profile_list --}}
-      <button ng-click="select_profile(profile)" class="action">
+      <button ng-click="select_profile(profile)" class="btn waves-effect waves-light">
         <span id="{[{profile.name}]}_select_circle"  class="fa fa-circle-o"></span>
         Select
       </button>
 
       {{!-- If profile is selected, goes to that profiles view page --}}
-      <button ng-show="selected_profile.name == profile.name" class="action">
+      <button ng-show="selected_profile.name == profile.name" class="btn waves-effect waves-light" ng-click='link_to_profile()'>
         <span class="fa fa-heart"></span>
-        <a href="/profile/{[{profile.name}]}/view" style="color: white;">Profile</a>
+        Profile
       </button>
 
       {{!-- Remove the profile --}}
-      <button ng-click="remove_profile_modal_trigger()" ng-show="selected_profile.name == profile.name" class="action">
+      <button ng-click="remove_profile_modal_trigger()" ng-show="selected_profile.name == profile.name" class="btn waves-effect waves-light">
         <span class="fa fa-user-times"></span>
         Remove
       </button>
-      <div ng-repeat="group in profile.subscribed_groups")
+      {{!-- <div ng-repeat="group in profile.subscribed_groups")
         <p> {[{group}]} </p>
-      </div>
+      </div> --}}
     </div>
   </div>
   <div>
     <p ng-show="profile_list.length < 1">
       Looks like you dont have any profiles setup, would you like to make one?
     </p>
-    <button class="success row medium-4 large-offset-1" ng-click="new_profile_modal_trigger()"> Create New Profile </button>
+    <button class="btn waves-effect waves-light row medium-4 large-offset-1" ng-click="new_profile_modal_trigger()"> Create New Profile </button>
   </div>
   <div ng-include="" src="'partials/new_profile.html'"></div>
   <div ng-include="" src="'partials/remove_profile.html'"></div>

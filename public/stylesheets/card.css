@@ -9,7 +9,9 @@
   -webkit-transition: all .5s ease-out; /* Safari */
   transition: all .5s ease-out;
   margin: 2em;
-  padding: .5em;}
+  padding: .5em;
+  display: block!important;
+}
   .card .title {
     line-height: 3rem!important;
     font-size: 1.5rem!important;

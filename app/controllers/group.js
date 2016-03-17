@@ -1,7 +1,9 @@
 var Group       = require('../models/group');
 var Discussion  = require('../models/discussion');
+var Comment     = require('../models/comment');
 var Profile     = require('../models/profile');
 var Log         = require('../models/log');
+var async       = require('async');
 
 module.exports.controller = function(app) {
 
@@ -19,6 +21,90 @@ module.exports.controller = function(app) {
           res.send('Could not find group');
         }
         res.send(doc);
+      });
+  });
+
+  app.get('/groups/public_group_search', function(req, res){
+    if(!req.user){
+      res.render('index');
+    }
+    Group
+      .find({
+        'privacy': false
+      }).exec(function(err, docs){
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        }
+        res.send(docs);
+      });
+  });
+
+  app.get('/group/:name/view', function(req, res){
+    if(!req.user){
+      res.redirect('index');
+    }
+    //TODO: Check if the user is authorized to look at this group
+    Group
+      .findOne({
+        'name': req.params.name
+      })
+      .exec(function(err, doc){
+        if(err){
+          callback(err);
+        }
+        res.render('group', {group: doc})
+      });
+  });
+
+  app.get('/group/:gid/get_discussion_list', function(req, res){
+    if(!req.user){
+      res.redirect('index');
+    }
+    Group
+      .findById(req.params.gid)
+      .exec(function(err, doc){
+        if(err){
+          console.log(err);
+          res.sendStatus(500);
+        }
+        if(!doc){
+          res.send('Unable to find group');
+        }
+        var calls = [];
+        var posts = [];
+
+        try {
+          doc.discussion_list.forEach(function(discussion){ //for each discussion
+            calls.push(function(cb){ //push into the calls list
+              Discussion //find that discussion
+                .findById(discussion)
+                .exec(function(err, disc){
+                  Comment //for the discussions original post
+                    .findById(disc.comment)
+                    .exec(function(err, comment){ //find the OP
+                      posts.push(comment.render());
+                      cb();
+                    });
+                });
+            });
+          });
+          async.parallel(calls, function(err, result){
+            if(err){
+              console.log(err);
+              res.sendStatus(500);
+              return
+            }
+            console.log('SENDING RESPONSE');
+            console.log(posts);
+            res.send(posts);
+          })
+        } catch (e) {
+          console.log(e);
+        } finally {
+
+        }
+
       });
   });
 

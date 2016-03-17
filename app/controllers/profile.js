@@ -285,6 +285,29 @@ module.exports.controller = function(app) {
     }
   });
 
+  app.post('/profile/:name/add_friend/:fid', function(req, res){
+    if(!req.user || typeof req.params.name === 'undefined' || typeof req.params.fid === 'undefined'){
+      res.redirect('index');
+    }
+    Profile
+      .findOne({
+        'name': req.params.name
+      })
+      .exec(function(err, doc){
+        if(err){
+          console.log(err);
+          res.sendStatus(500);
+        }
+        if(!doc){
+          console.log('Profile ' + req.params.name +' not found');
+          res.send('Could not find profile to add friend to');
+        }
+
+
+
+      });
+  });
+
   // ====================================
   // Profile New ========================
   // Creates a new profile and populates

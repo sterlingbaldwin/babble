@@ -1,4 +1,8 @@
-babble = angular.module('babble',['babble.profile','babble.profile_view'])
+babble = angular.module('babble',[
+  'babble.profile',
+  'babble.profile_view',
+  'babble.group_view'
+  ])
 .controller 'BabbleControl',['$scope','$http',($scope, $http) ->
 
   $scope.data = {

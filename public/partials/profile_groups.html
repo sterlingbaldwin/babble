@@ -1,11 +1,19 @@
-<div class="row">
-  <div class="card group_card" ng-repeat="group in group_list">
+<div class="">
+  <div class="card row group_card waves-effect waves-light large-offset-2" ng-repeat="group in group_list" ng-click="select_group(group)" id="group_{[{group._id}]}">
     <div class="" style="border: 4px solid white; padding: 1em;">
+      <a class="btn-floating btn-large waves-effect waves-light red right" ng-show="selected_group == group._id">
+        <i class="material-icons">
+          +
+        </i>
+      </a>
       <h2>
         {[{group.name}]}
       </h2>
       <p>
         {[{group.description}]}
+      </p>
+      <p class="card-element" ng-repeat="key in group_keys" ng-show="selected_group == group._id">
+        {[{key}]} : {[{group[key] }]}
       </p>
       <p ng-show="group.unseen == true">
         Unread discussions
@@ -22,7 +30,7 @@
         create a group
       </a>
       or search for a
-      <a href="">
+      <a href="" ng-click='public_group_search()'>
         public group
       </a>
     </p>
