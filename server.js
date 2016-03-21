@@ -10,7 +10,7 @@ var passport      = require('passport');
 var connect       = require('connect');
 var flash         = require('connect-flash');
 var configDB      = require('./config/database.js');
-
+var socket        = require('./config/socket.js');
 
 
 
@@ -18,15 +18,8 @@ var app = express();
 
 //socket io setup
 var server   = require('http').Server(app);
-var io       = require('socket.io')(server);
-
-// io.on('connection', function(socket){
-//   socket.on('new:comment',{
-//
-//   })
-// });
-
-
+var io       = require('socket.io').listen(server);
+io.sockets.on('connection', socket);
 
 // database connection
 var mongoose = require('mongoose');

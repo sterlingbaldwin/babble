@@ -1,7 +1,7 @@
 <div class="">
   <div class="card row group_card waves-effect waves-light large-offset-2" ng-repeat="group in group_list" ng-click="select_group(group)" id="group_{[{group._id}]}">
     <div class="" style="border: 4px solid white; padding: 1em;">
-      <a class="btn-floating btn-large waves-effect waves-light red right" ng-show="selected_group == group._id">
+      <a class="btn-floating btn-large waves-effect waves-light red right" ng-show="selected_group == group._id" ng-click="new_discussion_modal_trigger(group)">
         <i class="material-icons">
           +
         </i>
@@ -12,9 +12,14 @@
       <p>
         {[{group.description}]}
       </p>
-      <p class="card-element" ng-repeat="key in group_keys" ng-show="selected_group == group._id">
+      <div class="card" ng-repeat="d in group.discussion_list" ng-show="selected_group == group._id">
+        <h3 style="margin-left: 10px!important;">{[{d.title}]}</h3>
+        <p  style="margin-left: 10px!important; margin-bottom:1em!important;">{[{d.desc}]}</p>
+        <div class="discussion-post" ng-bind-html="d.text"></div>
+      </div>
+      <!-- <div class="card-element" ng-repeat="key in group_keys" ng-show="selected_group == group._id">
         {[{key}]} : {[{group[key] }]}
-      </p>
+      </div> -->
       <p ng-show="group.unseen == true">
         Unread discussions
       </p>

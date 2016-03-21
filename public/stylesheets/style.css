@@ -18,3 +18,9 @@ a {
   cursor: pointer;
   cursor: hand;
 }
+
+.discussion-post {
+  border: 1px solid grey;
+  border-radius: .2em;
+  padding: 1em;
+}

@@ -7,6 +7,62 @@ var async       = require('async');
 
 module.exports.controller = function(app) {
 
+
+  app.post('/group/new_discussion', function(req, res){
+    console.log(req.body);
+    try {
+      var newd = new Discussion({
+        title: req.body.title,
+        description: req.body.desc,
+        parent_id: req.body.group
+      });
+
+      var error = false;
+
+      var newcom = new Comment({
+        content: req.body.text,
+        parent_profile: req.body.profile,
+        parent_comment: newd._id,
+      });
+      newd.comment = newcom._id;
+      newd.save(function(err){
+        if(err) {
+          console.log(err);
+          error = true;
+        }
+      });
+      newcom.save(function(err){
+        if(err) {
+          console.log(err);
+          error = true;
+        }
+      });
+
+      Group
+        .findById(req.body.group)
+        .exec(function(err, doc){
+          doc.discussion_list.push(newd._id);
+          doc.save(function(err){
+            if(err) {
+              console.log(err);
+              error = true;
+            }
+          });
+        });
+
+      if(error){
+        res.sendStatus(500);
+      } else {
+        res.send('success');
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+
+    }
+
+  });
+
   app.get('/group/:name', function(req, res){
     Group
       .findOne({
@@ -77,13 +133,20 @@ module.exports.controller = function(app) {
         try {
           doc.discussion_list.forEach(function(discussion){ //for each discussion
             calls.push(function(cb){ //push into the calls list
+
               Discussion //find that discussion
                 .findById(discussion)
                 .exec(function(err, disc){
+                  console.log(disc);
                   Comment //for the discussions original post
                     .findById(disc.comment)
                     .exec(function(err, comment){ //find the OP
-                      posts.push(comment.render());
+                      console.log(comment);
+                      posts.push({
+                        title: disc.title,
+                        desc: disc.description,
+                        text: comment.render()
+                      });
                       cb();
                     });
                 });

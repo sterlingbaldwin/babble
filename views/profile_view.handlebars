@@ -4,9 +4,11 @@
 }
 </style>
 
-<link rel="stylesheet", href="/stylesheets/menu.css">
+<link rel='stylesheet', href='/stylesheets/menu.css'>
 <link rel='stylesheet', href='/stylesheets/profile.css'>
-<script src='/javascripts/profile_view.js'></script>
+<link rel='stylesheet', href='/stylesheets/codemirror.css'>
+<script type="text/javascript" src="/javascripts/codemirror.js"></script>
+<script type="text/javascript" src='/javascripts/profile_view.js'></script>
 <div ng-include="" src="'/partials/profile_topbar.html'"></div>
 
 {{!-- <link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'> --}}
@@ -20,29 +22,29 @@
       {{!-- TODO: create profile settings model --}}
       <div class="icon-bar vertical five-up">
 
-        <a class="item">
+        <a class="item" class="waves-effect waves-light">
           <img class="left-off-canvas-toggle" src="/images/ic_keyboard_arrow_left_black_48dp/web/ic_keyboard_arrow_left_black_48dp_2x.png"></img>
         </a>
 
-        <a class="item" ng-click='selected_tab = "config"'>
+        <a class="item" ng-click='selected_tab = "config"' class="waves-effect waves-light">
           <img src="/images/ic_settings_applications_black_48dp/web/ic_settings_applications_black_48dp_2x.png"></img>
           <label>Configure</label>
         </a>
 
         {{!-- TODO: Create Profile home --}}
-        <a class="item" ng-click='selected_tab = "home"'>
+        <a class="item" ng-click='selected_tab = "home"' class="waves-effect waves-light">
           <img src="/images/ic_account_box_black_48dp/web/ic_account_box_black_48dp_2x.png"></img>
           <label>Home</label>
         </a>
 
         {{!-- TODO: create group display  --}}
-        <a class="item" ng-click='get_groups()'>
+        <a class="item" ng-click='get_groups()' class="waves-effect waves-light">
          <img src="/images/ic_group_black_48dp/web/ic_group_black_48dp_2x.png"></img>
          <label>Groups</label>
         </a>
 
         {{!-- TODO: Create Active Discussion list view --}}
-        <a class="item" ng-click='selected_tab = "discussions"'>
+        <a class="item" ng-click='selected_tab = "discussions"' class="waves-effect waves-light">
           <img src="/images/ic_message_black_48dp/web/ic_message_black_48dp_2x.png"></img>
           <label>Discussions</label>
         </a>
@@ -57,6 +59,7 @@
       <div ng-include="" src="'/partials/profile_discussions.html'" ng-show='selected_tab == "discussions"'></div>
     </div>
 
+    <div ng-include="" src="'/partials/new_discussion_modal.html'"></div>
     <div ng-include="" src="'/partials/group_create.html'"></div>
     <div ng-include="" src="'/partials/public_group_search.html'"></div>
   </div>

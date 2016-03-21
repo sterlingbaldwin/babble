@@ -11,6 +11,42 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       $scope.selected_group = '';
     }
 
+    $scope.post_new_discussion = function(){
+      var title = $('#new-discussion-name-field').val();
+      var desc = $('#new-discussion-description-field').val();
+      data = {
+        title: title,
+        desc: desc,
+        text: $scope.codeMirror.getValue(),
+        group: $scope.selected_group,
+        profile: $scope.profile
+      }
+      $http({
+        url: '/group/new_discussion',
+        method: 'POST',
+        data: data
+      }).then(function(res){
+        console.log(res);
+      }).catch(function(res){
+        console.log(res);
+      });
+    }
+
+    $scope.new_discussion_modal_trigger = function(group){
+      $('#new_discussion_modal').foundation('reveal', 'open');
+      $scope.codeMirror = CodeMirror(
+        $('#discussion-post-field')[0],
+        {
+          mode: 'twilight',
+          lineNumbers: true,
+          viewportMargin: Infinity
+        }
+      );
+      //$('.CodeMirror').addClass('CodeMirror-focused');
+      //$scope.codeMirror.setValue('\n\n\n\n\n\n\n\n\n\n');
+      // $scope.codeMirror.setCursor(1);
+    }
+
     $scope.create_group_trigger = function(){
       $("#group_create_modal").foundation("reveal", "open");
     }
@@ -27,7 +63,7 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
         method: 'GET'
       }).then(function(res){
         console.log(res);
-
+        group.discussion_list = res.data;
       }).catch(function(res){
         console.log(res);
       });

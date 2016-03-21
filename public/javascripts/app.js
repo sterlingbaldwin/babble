@@ -2,8 +2,34 @@
 (function() {
   var babble;
 
-  babble = angular.module('babble', ['babble.profile', 'babble.profile_view', 'babble.group_view']).controller('BabbleControl', [
-    '$scope', '$http', function($scope, $http) {
+  babble = angular.module('babble', ['babble.profile', 'babble.profile_view', 'babble.group_view', 'ngSanitize']).factory('socket', function($rootScope) {
+    var socket;
+    socket = io.connect();
+    return {
+      on: function(eventName, callback) {
+        return socket.on(eventName, function() {
+          var args;
+          args = arguments;
+          return $rootScope.$apply(function() {
+            return callback.apply(socket, args);
+          });
+        });
+      },
+      emit: function(eventName, data, callback) {
+        return socket.emit(eventName, data, function() {
+          var args;
+          args = arguments;
+          return $rootScope.$apply(function() {
+            return callback.apply(socket, args);
+          });
+        });
+      }
+    };
+  }).controller('BabbleControl', [
+    '$scope', '$http', 'socket', function($scope, $http, socket) {
+      socket.on('init', function(data) {
+        return console.log(data);
+      });
       $scope.data = {
         'status': 'loggedout'
       };

@@ -1,9 +1,33 @@
 babble = angular.module('babble',[
   'babble.profile',
   'babble.profile_view',
-  'babble.group_view'
+  'babble.group_view',
+  'ngSanitize'
   ])
-.controller 'BabbleControl',['$scope','$http',($scope, $http) ->
+.factory('socket', ($rootScope) ->
+  socket = io.connect()
+  return {
+    on: (eventName, callback) ->
+      socket.on(eventName, () ->
+        args = arguments
+        $rootScope.$apply( () ->
+          callback.apply(socket, args)
+        )
+      )
+    emit: (eventName, data, callback) ->
+      socket.emit(eventName, data, () ->
+        args = arguments
+        $rootScope.$apply( () ->
+          callback.apply(socket, args)
+        )
+      )
+    }
+  )
+.controller 'BabbleControl',['$scope', '$http', 'socket', ($scope, $http, socket) ->
+
+  socket.on('init', (data) ->
+    console.log data
+  )
 
   $scope.data = {
     'status': 'loggedout'
