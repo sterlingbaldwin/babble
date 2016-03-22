@@ -28,6 +28,10 @@ a {
   cursor: hand;*/
 }
 
+.discussion-context {
+  
+}
+
 .discussion-post {
   border: 1px solid grey;
   border-radius: .2em;
