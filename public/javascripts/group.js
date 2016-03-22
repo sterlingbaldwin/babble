@@ -1,4 +1,4 @@
 angular.module('babble.group_view', []).controller('GroupViewControl', [
-  '$scope', '$http', function($scope, $http) {
+  '$scope', '$http', 'socket', function($scope, $http, socket) {
   }
 ])

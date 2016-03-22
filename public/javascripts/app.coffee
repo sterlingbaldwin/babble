@@ -5,7 +5,7 @@ babble = angular.module('babble',[
   'ngSanitize'
   ])
 .factory('socket', ($rootScope) ->
-  socket = io.connect()
+  socket = io.connect("http://localhost:8080")
   return {
     on: (eventName, callback) ->
       socket.on(eventName, () ->
@@ -25,7 +25,15 @@ babble = angular.module('babble',[
   )
 .controller 'BabbleControl',['$scope', '$http', 'socket', ($scope, $http, socket) ->
 
-  socket.on('init', (data) ->
+  socket.on('connect', () ->
+    console.log 'Socket connected'
+    socket.emit('init', {
+      profile: $scope.profile,
+      status:  $scope.data.status
+    })
+  )
+
+  socket.on('message', (data) ->
     console.log data
   )
 

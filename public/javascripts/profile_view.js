@@ -1,5 +1,6 @@
 angular.module('babble.profile_view', []).controller('ProfileViewControl', [
-  '$scope', '$http', function($scope, $http) {
+  '$scope', '$http', 'socket', function($scope, $http, socket) {
+
 
     $scope.init = function(){
       $scope.profile = window.location.href.split('/')[4];
@@ -51,12 +52,21 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       $("#group_create_modal").foundation("reveal", "open");
     }
 
+    $scope.select_discussion = function(discussion){
+      console.log(discussion);
+    }
+
     $scope.select_group = function(group){
       if(group._id == $scope.selected_group){
         return;
       }
       console.log(group);
       $scope.selected_group = group._id;
+
+      $('.selected').addClass('unselected');
+      $('.selected').removeClass('selected');
+      $('#group_' + group._id).addClass('selected');
+      $('#group_' + group._id).removeClass('unselected');
       $scope.group_keys = Object.keys(group);
       $http({
         url: '/group/' + group._id + '/get_discussion_list',

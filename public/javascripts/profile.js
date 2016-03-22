@@ -1,6 +1,6 @@
 
 angular.module('babble.profile', []).controller('ProfileControl', [
-  '$scope', '$http', function($scope, $http) {
+  '$scope', '$http', 'socket', function($scope, $http, socket) {
 
     $scope.profile_list = [];
 
@@ -32,6 +32,7 @@ angular.module('babble.profile', []).controller('ProfileControl', [
     }
 
     $scope.init = function() {
+      
       $http({
         url: '/profile/list',
         method: 'GET'

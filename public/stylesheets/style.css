@@ -14,13 +14,27 @@ a {
 }
 
 .group_card:hover {
-  background-color: #388E3C!important;
   cursor: pointer;
   cursor: hand;
+}
+
+.unselected:hover {
+  background-color: #388E3C!important;
+}
+
+.unselected_discussion:hover {
+  /*background-color: #388E3C!important;*/
+  /*cursor: pointer;
+  cursor: hand;*/
 }
 
 .discussion-post {
   border: 1px solid grey;
   border-radius: .2em;
   padding: 1em;
+}
+
+.selected {
+  background-color: #009688!important;
+  cursor: default!important;
 }

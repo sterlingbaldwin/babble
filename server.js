@@ -17,9 +17,25 @@ var socket        = require('./config/socket.js');
 var app = express();
 
 //socket io setup
-var server   = require('http').Server(app);
-var io       = require('socket.io').listen(server);
-io.sockets.on('connection', socket);
+try {
+  var server   = require('http').Server(app);
+  var io       = require('socket.io')(8080);
+
+  io.on('connection', function(client){
+    console.log('connected to client');
+    client.on('init', function(args){
+      console.log('got a message');
+      console.log(args);
+      //client.send('message to client');
+    });
+  });
+
+} catch (e) {
+
+} finally {
+
+}
+
 
 // database connection
 var mongoose = require('mongoose');
