@@ -2,6 +2,14 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
   '$scope', '$http', 'socket', function($scope, $http, socket) {
 
 
+    socket.on('connect', function(){
+
+      // socket.emit('discussion:new', {
+      //   blar: 'blarblar'
+      // });
+
+    });
+
     $scope.init = function(){
       $scope.profile = window.location.href.split('/')[4];
       $scope.selected_tab = 'home';
@@ -9,7 +17,8 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       $scope.group_list = [];
       $scope.friend_list = [];
       $scope.public_group_list = [];
-      $scope.selected_group = '';
+      $scope.selected_group = undefined;
+      $scope.selected_group_obj = null;
     }
 
     $scope.post_new_discussion = function(){
@@ -22,15 +31,28 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
         group: $scope.selected_group,
         profile: $scope.profile
       }
-      $http({
-        url: '/group/new_discussion',
-        method: 'POST',
-        data: data
-      }).then(function(res){
-        console.log(res);
-      }).catch(function(res){
-        console.log(res);
-      });
+      // $http({
+      //   url: '/group/new_discussion',
+      //   method: 'POST',
+      //   data: data
+      // }).then(function(res){
+      //   console.log(res);
+      // }).catch(function(res){
+      //   console.log(res);
+      // });
+      try {
+        socket.emit('discusson:new', {
+          data: data
+        }, function(data){
+          console.log('hit discussion:new callback');
+          console.log(data);
+        });
+      } catch (e) {
+        console.log(e);
+      } finally {
+
+      }
+
     }
 
     $scope.new_discussion_modal_trigger = function(group){
@@ -62,10 +84,17 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       }
       console.log(group);
       $scope.selected_group = group._id;
+      $scope.selected_group_obj = group;
 
       $('.selected').addClass('unselected');
+      $('.selected').removeClass('custom-width-2');
+      $('.group_card').removeClass('custom-offset-2');
+      $('.group_card').addClass('custom-offset-1');
+      $('.group_card').addClass('custom-width-1');
       $('.selected').removeClass('selected');
+      // $('.selected').removeClass('large-offset-2');
       $('#group_' + group._id).addClass('selected');
+      $('#group_' + group._id).addClass('custom-width-2');
       $('#group_' + group._id).removeClass('unselected');
       $scope.group_keys = Object.keys(group);
       $http({
@@ -74,6 +103,19 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       }).then(function(res){
         console.log(res);
         group.discussion_list = res.data;
+        $('html, body').animate({
+            scrollTop: $("#group_" + group._id).offset().top - 50
+        }, 1000);
+        $('.discussion-wrapper').fadeIn()
+        .css({
+          top:1000,position:'absolute'
+        })
+        .animate({
+            top:$("#group_" + group._id).offset().top - 20
+          }, 800, function() {
+            //callback
+        });
+
       }).catch(function(res){
         console.log(res);
       });

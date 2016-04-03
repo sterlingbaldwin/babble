@@ -23,7 +23,8 @@ babble = angular.module('babble',[
       )
     }
   )
-.controller 'BabbleControl',['$scope', '$http', 'socket', ($scope, $http, socket) ->
+.controller 'BabbleControl',
+['$scope', '$http', 'socket', ($scope, $http, socket) ->
 
   socket.on('connect', () ->
     console.log 'Socket connected'
@@ -31,6 +32,10 @@ babble = angular.module('babble',[
       profile: $scope.profile,
       status:  $scope.data.status
     })
+    socket.emit('discussion:new', {
+      blar: 'blarblar'
+    })
+    return
   )
 
   socket.on('message', (data) ->

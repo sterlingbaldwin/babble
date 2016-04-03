@@ -29,9 +29,12 @@
     '$scope', '$http', 'socket', function($scope, $http, socket) {
       socket.on('connect', function() {
         console.log('Socket connected');
-        return socket.emit('init', {
+        socket.emit('init', {
           profile: $scope.profile,
           status: $scope.data.status
+        });
+        socket.emit('discussion:new', {
+          blar: 'blarblar'
         });
       });
       socket.on('message', function(data) {

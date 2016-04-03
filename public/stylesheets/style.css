@@ -9,6 +9,10 @@ a {
   color: #00B7FF;
 }
 
+.wrapper {
+  width: 80%;
+}
+
 .span-padding {
   padding-right: 10px;
 }
@@ -16,6 +20,10 @@ a {
 .group_card:hover {
   cursor: pointer;
   cursor: hand;
+}
+
+.group_card {
+  /*float: left;*/
 }
 
 .unselected:hover {
@@ -26,19 +34,51 @@ a {
   /*background-color: #388E3C!important;*/
   /*cursor: pointer;
   cursor: hand;*/
+  /*margin-right: 1em !important;*/
+}
+
+.unselected_discussion {
+
+}
+
+.discussion-wrapper {
+  background-color: #009688!important;
+  padding: 1em;
 }
 
 .discussion-context {
-  
+
 }
 
 .discussion-post {
   border: 1px solid grey;
   border-radius: .2em;
   padding: 1em;
+  float: right;
 }
 
 .selected {
   background-color: #009688!important;
   cursor: default!important;
+}
+
+.custom-width-1 {
+  width: 40% !important;
+}
+
+.custom-width-2 {
+  width: 45% !important;
+}
+
+
+.custom-offset-1 {
+  margin-left: 3% !important;
+}
+
+.custom-offset-2 {
+  margin-left: 10% !important;
+}
+
+.custom-offset-3 {
+  margin-left: 45% !important;
 }

@@ -1,66 +1,71 @@
-<div class="">
-  <div class="card row group_card waves-effect waves-light large-offset-2 unselected" ng-repeat="group in group_list" ng-click="select_group(group)" id="group_{[{group._id}]}">
-    <div class="" style="border: 4px solid white; padding: 1em;">
-      <a class="btn-floating btn-large waves-effect waves-light red right" ng-show="selected_group == group._id" ng-click="new_discussion_modal_trigger(group)">
-        <i class="material-icons">
-          +
-        </i>
-      </a>
-      <h2>
-        {[{group.name}]}
-      </h2>
-      <p>
-        {[{group.description}]}
-      </p>
-      <div class="card" ng-repeat="d in group.discussion_list" ng-show="selected_group == group._id">
-        <h3 style="margin-left: 10px!important;">{[{d.title}]}</h3>
-        <p  style="margin-left: 10px!important; margin-bottom:1em!important;">{[{d.desc}]}</p>
-        <div class="discussion-post unselected_discussion" ng-click="select_discussion(d)" ng-bind-html="d.text"></div>
-        <div class="fixed-action-btn horizontal right" style="position: relative;">
-          <a class="btn-floating btn-large red">
-            <img class="large material-icons discussion-context" src="/images/ic_more_horiz_black_24dp/web/ic_more_horiz_black_24dp_2x.png"></img>
-          </a>
-          <ul>
-            <li>
-              <a class="btn-floating red">
-                <img  src="/images/ic_thumb_up_black_24dp/web/ic_thumb_up_black_24dp_1x.png" class="material-icons">
-                  insert_chart
-                </img>
-              </a>
-            </li>
-            <li>
-              <a class="btn-floating yellow darken-1">
-                <img src="/images/ic_thumb_down_black_24dp/web/ic_thumb_down_black_24dp_1x.png" class="material-icons">
-                  format_quote
-                </img>
-              </a>
-            </li>
-            <li>
-              <a class="btn-floating green">
-                <img src="/images/ic_warning_black_24dp/web/ic_warning_black_24dp_1x.png" class="material-icons">
-                </img>
-              </a>
-            </li>
-            <li>
-              <a class="btn-floating blue">
-                <img class="material-icons" src="/images/ic_chat_black_24dp/web/ic_chat_black_24dp_1x.png">
-                </img>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="discussion_edit" ng-show="false">
-
-        </div>
+<div class="wrapper">
+  <div class="columns">
+    <div class="card group_card waves-effect waves-light custom-offset-2 unselected" ng-repeat="group in group_list" ng-click="select_group(group)" id="group_{[{group._id}]}">
+      <div class="" style="border: 4px solid white; padding: 1em;">
+        <h2>
+          {[{group.name}]}
+        </h2>
+        <p>
+          {[{group.description}]}
+        </p>
+        <!-- <div class="card-element" ng-repeat="key in group_keys" ng-show="selected_group == group._id">
+          {[{key}]} : {[{group[key] }]}
+        </div> -->
+        <p ng-show="group.unseen == true">
+          Unread discussions
+        </p>
       </div>
-      <!-- <div class="card-element" ng-repeat="key in group_keys" ng-show="selected_group == group._id">
-        {[{key}]} : {[{group[key] }]}
-      </div> -->
-      <p ng-show="group.unseen == true">
-        Unread discussions
-      </p>
     </div>
   </div>
+  <div class="columns large-offset-6 custom-width-1 discussion-wrapper card" ng-show="selected_group == selected_group_obj._id">
+    <a class="btn-floating btn-large waves-effect waves-light red right row" ng-click="new_discussion_modal_trigger(selected_group_obj)">
+      <i class="material-icons" data-tooltip aria-haspopup="true" title="New Discussion">
+        +
+      </i>
+    </a>
+    <div class="card waves-effect waves-light unselected_discussion row" ng-repeat="d in selected_group_obj.discussion_list" ng-show="selected_group == selected_group_obj._id">
+      <h3 style="margin-left: 10px!important;">{[{d.title}]}</h3>
+      <p  style="margin-left: 10px!important; margin-bottom:1em!important;">{[{d.desc}]}</p>
+      <div class="discussion-post unselected_discussion" ng-click="select_discussion(d)" ng-bind-html="d.text"></div>
+      <div class="fixed-action-btn horizontal right" style="position: relative;">
+        <a class="btn-floating btn-large red">
+          <img class="large material-icons discussion-context" src="/images/ic_more_horiz_black_24dp/web/ic_more_horiz_black_24dp_2x.png"></img>
+        </a>
+        <ul>
+          <li>
+            <a class="btn-floating red">
+              <img  src="/images/ic_thumb_up_black_24dp/web/ic_thumb_up_black_24dp_1x.png" class="material-icons">
+                insert_chart
+              </img>
+            </a>
+          </li>
+          <li>
+            <a class="btn-floating yellow darken-1">
+              <img src="/images/ic_thumb_down_black_24dp/web/ic_thumb_down_black_24dp_1x.png" class="material-icons">
+                format_quote
+              </img>
+            </a>
+          </li>
+          <li>
+            <a class="btn-floating green">
+              <img src="/images/ic_warning_black_24dp/web/ic_warning_black_24dp_1x.png" class="material-icons">
+              </img>
+            </a>
+          </li>
+          <li>
+            <a class="btn-floating blue">
+              <img class="material-icons" src="/images/ic_chat_black_24dp/web/ic_chat_black_24dp_1x.png">
+              </img>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="discussion_edit" ng-show="false">
+
+      </div>
+    </div>
+  </div>
+
   <div>
     <div class="" ng-show="group_list && group_list.length == 0">
       <h1>No groups!</h1>

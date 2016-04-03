@@ -1,9 +1,9 @@
-@import url(//fonts.googleapis.com/css?family=Roboto:400,500,300,100,700,900);
+/*@import url(//fonts.googleapis.com/css?family=Roboto:400,500,300,100,700,900);*/
 
 .card {
   background: #FAFAFA;
-  font-family: 'Roboto', sans-serif!important;
-  overflow: hidden!important;
+  /*font-family: 'Roboto', sans-serif!important;*/
+  /*overflow: hidden!important;*/
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.6), 0 2px 10px 0 rgba(0, 0, 0, 0.2)!important;
   color: #272727!important;
   -webkit-transition: all .5s ease-out; /* Safari */

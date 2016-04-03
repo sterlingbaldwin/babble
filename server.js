@@ -24,10 +24,15 @@ try {
   io.on('connection', function(client){
     console.log('connected to client');
     client.on('init', function(args){
-      console.log('got a message');
+      console.log('got an init');
       console.log(args);
       //client.send('message to client');
     });
+    client.on('discussion:new', function(args){
+      console.log('got a discussion:new');
+      console.log(args);
+    });
+    return
   });
 
 } catch (e) {
