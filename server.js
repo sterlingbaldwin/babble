@@ -12,8 +12,6 @@ var flash         = require('connect-flash');
 var configDB      = require('./config/database.js');
 var socket        = require('./config/socket.js');
 
-
-
 var app = express();
 
 //socket io setup
