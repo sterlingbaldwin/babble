@@ -26,16 +26,45 @@ babble = angular.module('babble',[
 .controller 'BabbleControl',
 ['$scope', '$http', 'socket', ($scope, $http, socket) ->
 
-  socket.on('connect', () ->
+  $scope.profile = {}
+  $scope.socket = socket
+  $scope.group_list = []
+
+  socket.on('connect', (args) ->
     console.log 'Socket connected'
+    return
+  )
+
+  socket.on('user_connected', (args) ->
+    console.log "user connected"
+    console.log args
+    return
+  )
+
+  socket.on('userID', (args) ->
+    console.log "got a userId"
+    console.log args
+    $scope.userID = args
+  )
+
+  $scope.send_message = (destination, message) ->
+    message.userID = $scope.userID
+    console.log 'sending'
+    console.log message
+    console.log 'to ', destination
+    socket.emit(destination, message)
+
+
+  $scope.send_profile = (profile) ->
     socket.emit('init', {
-      profile: $scope.profile,
+      profile: profile,
       status:  $scope.data.status
     })
-    socket.emit('discussion:new', {
-      blar: 'blarblar'
-    })
-    return
+
+  socket.on('discussion:new', (data) ->
+    console.log 'Got a new discussion!'
+    console.log data
+    # $scope.group_lis    
   )
 
   socket.on('message', (data) ->

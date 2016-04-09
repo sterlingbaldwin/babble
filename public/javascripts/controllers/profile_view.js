@@ -2,23 +2,13 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
   '$scope', '$http', 'socket', function($scope, $http, socket) {
 
 
-    socket.on('connect', function(){
-
-      // socket.emit('discussion:new', {
-      //   blar: 'blarblar'
-      // });
-
-    });
-
     $scope.init = function(){
       $scope.profile = window.location.href.split('/')[4];
       $scope.selected_tab = 'home';
       $scope.selected_friends = [];
-      $scope.group_list = [];
       $scope.friend_list = [];
       $scope.public_group_list = [];
-      $scope.selected_group = undefined;
-      $scope.selected_group_obj = null;
+      $scope.$parent.send_profile($scope.profile);
     }
 
     $scope.post_new_discussion = function(){
@@ -28,31 +18,11 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
         title: title,
         desc: desc,
         text: $scope.codeMirror.getValue(),
-        group: $scope.selected_group,
+        group: $scope.$parent.selected_group,
         profile: $scope.profile
       }
-      // $http({
-      //   url: '/group/new_discussion',
-      //   method: 'POST',
-      //   data: data
-      // }).then(function(res){
-      //   console.log(res);
-      // }).catch(function(res){
-      //   console.log(res);
-      // });
-      try {
-        socket.emit('discusson:new', {
-          data: data
-        }, function(data){
-          console.log('hit discussion:new callback');
-          console.log(data);
-        });
-      } catch (e) {
-        console.log(e);
-      } finally {
 
-      }
-
+      $scope.$parent.send_message('discussion:new', data);
     }
 
     $scope.new_discussion_modal_trigger = function(group){
@@ -79,13 +49,22 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
     }
 
     $scope.select_group = function(group){
-      if(group._id == $scope.selected_group){
+      if(group._id == $scope.$parent.selected_group){
         return;
       }
       console.log(group);
-      $scope.selected_group = group._id;
-      $scope.selected_group_obj = group;
+      $scope.$parent.selected_group = group._id;
+      $scope.$parent.selected_group_obj = group;
 
+      var index = 0;
+      for(i in $scope.$parent.group_list){
+        if($scope.$parent.group_list[i] && $scope.$parent.group_list[i].id == $scope.$parent.selected_group){
+          index = i;
+          break;
+        }
+      }
+      //$scope.move($scope.$parent.group_list, index, 0);
+      //$scope.$apply();
       $('.selected').addClass('unselected');
       $('.selected').removeClass('custom-width-2');
       $('.group_card').removeClass('custom-offset-2');
@@ -144,8 +123,13 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
         data: data
       }).then(function(res){
         console.log(res);
-        $scope.group_list.push(res.data);
-        $scope.group_list.sort($scope.group_compare);
+        $scope.$parent.group_list.push(res.data);
+        $scope.$parent.group_list.sort($scope.group_compare);
+        if($scope.$parent.selected_group){
+          $('#group_' + res.data.id).addClass('custom-offset-1');
+          $('#group_' + res.data.id).addClass('custom-width-1');
+          $('#group_' + res.data.id).removeClass('custom-offset-2');
+        }
         $('#group_create_modal').foundation('reveal', 'close');
       }).catch(function(res){
         console.log(res);
@@ -176,7 +160,41 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       }).then(function(res){
         console.log(res);
         $scope.public_group_list = res.data;
+        for(i in $scope.public_group_list){
+          for(j in $scope.$parent.group_list){
+            if($scope.public_group_list[i] && $scope.$parent.group_list[j]){
+              if($scope.public_group_list[i]._id == $scope.$parent.group_list[j]._id){
+                $scope.public_group_list.splice(i, 1);
+              }
+            }
+          }
+        }
       }).catch(function(res){
+        console.log(res);
+      });
+    }
+
+    $scope.select_public_group = function(group){
+      $scope.public_group_selected = group._id;
+    }
+
+    $scope.group_subscribe = function(group){
+      console.log('got a group subscription request');
+      console.log(group);
+      var data = {
+        profile: $scope.profile
+      }
+      $http({
+        url:'/group/' + group.name + '/subscribe',
+        method: 'POST',
+        data: data
+      })
+      .then(function(res){
+        console.log(res);
+        $('#public_group_search_modal').foundation('reveal', 'close');
+        $scope.get_groups();
+      })
+      .catch(function(res){
         console.log(res);
       });
     }
@@ -188,13 +206,43 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
         url: '/profile/get_group_list/' + $scope.profile,
         method: 'GET'
       }).then(function(res){
-        $scope.group_list = res.data;
-        $scope.group_list.sort($scope.group_compare);
+        $scope.$parent.group_list = res.data;
+        $scope.$parent.group_list.sort($scope.group_compare);
         console.log(res);
       }).catch(function(res){
         console.log(res);
       });
     }
+
+    $scope.select_config_click = function(){
+      $scope.init();
+      $scope.selected_tab = "config"
+    }
+    $scope.select_home_click = function(){
+      $scope.init();
+    }
+    $scope.select_group_click = function(){
+      $scope.init();
+      $scope.selected_tab = "group"
+      $scope.get_groups();
+    }
+    $scope.select_discussion_click = function(){
+      $scope.init();
+      $scope.selected_tab = "discussions"
+    }
+
+    $scope.move = function(array, from, to) {
+      if( to === from ) return;
+
+      var target = array[from];
+      var increment = to < from ? -1 : 1;
+
+      for(var k = from; k != to; k += increment){
+        array[k] = array[k + increment];
+      }
+      array[to] = target;
+    }
+
 
   }
 ]);

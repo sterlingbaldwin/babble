@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="columns">
-    <div class="card group_card waves-effect waves-light custom-offset-2 unselected" ng-repeat="group in group_list" ng-click="select_group(group)" id="group_{[{group._id}]}">
+    <div class="card group_card waves-effect waves-light custom-offset-2 unselected" ng-repeat="group in $parent.group_list" ng-click="select_group(group)" id="group_{[{group._id}]}">
       <div class="" style="border: 4px solid white; padding: 1em;">
         <h2>
           {[{group.name}]}
@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div class="columns large-offset-6 custom-width-1 discussion-wrapper card" ng-show="selected_group == selected_group_obj._id">
+  <div class="columns small-offset-5 custom-width-3 discussion-wrapper card" ng-show="selected_group == selected_group_obj._id">
     <a class="btn-floating btn-large waves-effect waves-light red right row" ng-click="new_discussion_modal_trigger(selected_group_obj)">
       <i class="material-icons" data-tooltip aria-haspopup="true" title="New Discussion">
         +
@@ -66,8 +66,8 @@
     </div>
   </div>
 
-  <div>
-    <div class="" ng-show="group_list && group_list.length == 0">
+  <div class="custom-offset-2">
+    <div ng-show="group_list && group_list.length == 0">
       <h1>No groups!</h1>
       <p>
         Looks like you're not subscribed to any groups, maybe

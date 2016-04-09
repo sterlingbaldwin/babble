@@ -220,6 +220,7 @@ module.exports.controller = function(app) {
       g.log = l._id;
       g.save(function(err, item){
         if(err){
+          console.log("error during group save");
           console.log(err);
           res.sendStatus(500);
         }
@@ -275,6 +276,41 @@ module.exports.controller = function(app) {
         });
       });
   })
+
+  app.post('/group/:name/subscribe', function(req, res){
+    console.log(req.body.profile);
+    if(!req.user || !req.params.name){
+      res.send('Invalid group subscribe request');
+    }
+    Group
+      .findOne({
+        name: req.params.name
+      })
+      .exec(function(err, doc){
+        if(err || !doc){
+          console.log('---------subscribe group error-------------');
+          console.log(err);
+          res.send('error');
+          return;
+        }
+        console.log('found group:', doc.name);
+        if(!(req.body.profile in doc.subscribed_profiles)){
+          doc.subscribed_profiles.push(req.body.profile);
+          doc.save();
+        }
+
+        Profile
+          .update({
+            'name': req.body.profile
+          }, {
+            $push: {
+              subscribed_groups: doc._id
+            }
+          }, function(args){
+            console.log(args);
+          });
+      });
+  });
 
   app.post('/group/:name/delete', function(req, res){
     if(!req.user){

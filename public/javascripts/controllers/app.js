@@ -27,15 +27,43 @@
     };
   }).controller('BabbleControl', [
     '$scope', '$http', 'socket', function($scope, $http, socket) {
-      socket.on('connect', function() {
+      $scope.profile = {};
+      $scope.socket = socket;
+      $scope.group_list = [];
+      $scope.selected_group = null;
+      socket.on('connect', function(args) {
         console.log('Socket connected');
-        socket.emit('init', {
-          profile: $scope.profile,
+      });
+      socket.on('user_connected', function(args) {
+        console.log("user connected");
+        console.log(args);
+      });
+      socket.on('userID', function(args) {
+        console.log("got a userId");
+        console.log(args);
+        return $scope.userID = args;
+      });
+      $scope.send_message = function(destination, message) {
+        message.userID = $scope.userID;
+        console.log('sending');
+        console.log(message);
+        console.log('to ', destination);
+        return socket.emit(destination, message);
+      };
+      $scope.send_profile = function(profile) {
+        return socket.emit('init', {
+          profile: profile,
           status: $scope.data.status
         });
-        socket.emit('discussion:new', {
-          blar: 'blarblar'
-        });
+      };
+      socket.on('discussion:new', function(data) {
+        console.log('Got a new discussion!');
+        return console.log(data);
+        for(i in $scope.group_list){
+          if($scope.group_list[i].id == data.group){
+
+          }
+        }
       });
       socket.on('message', function(data) {
         return console.log(data);

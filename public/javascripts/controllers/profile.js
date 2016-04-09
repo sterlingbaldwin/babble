@@ -12,7 +12,8 @@ angular.module('babble.profile', []).controller('ProfileControl', [
     $scope.select_profile = function(profile){
       console.log(profile);
       $scope.selected_profile = profile;
-
+      $scope.$parent.profile = profile;
+      $scope.$parent.send_profile(profile);
       //remove other selected profiles style
       $('.fa-circle')
         .removeClass('fa-circle')
@@ -32,7 +33,7 @@ angular.module('babble.profile', []).controller('ProfileControl', [
     }
 
     $scope.init = function() {
-      
+
       $http({
         url: '/profile/list',
         method: 'GET'

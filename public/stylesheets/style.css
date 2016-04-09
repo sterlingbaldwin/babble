@@ -11,6 +11,7 @@ a {
 
 .wrapper {
   width: 80%;
+  margin-bottom: 50em;
 }
 
 .span-padding {
@@ -44,6 +45,8 @@ a {
 .discussion-wrapper {
   background-color: #009688!important;
   padding: 1em;
+  overflow-y: scroll;
+  height: 50%;
 }
 
 .discussion-context {
@@ -68,6 +71,10 @@ a {
 
 .custom-width-2 {
   width: 45% !important;
+}
+
+.custom-width-3 {
+  width: 55% !important;
 }
 
 

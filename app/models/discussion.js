@@ -6,8 +6,8 @@ var Discussion = new Schema({
   comment: { type: Schema.Types.ObjectId, ref: 'Comment'},
   title: { type: String },
   description: { type: String },
-  posted: { type: Date, default: Date.now},
-  updated: { type: Date }
+  posted: { type: Date, default: Date.now },
+  updated: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Discussion', Discussion);

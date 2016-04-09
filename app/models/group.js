@@ -20,6 +20,4 @@ Group.method.compare = function(a,b) {
     return 0;
 }
 
-
-
 module.exports = mongoose.model('Group', Group);

@@ -12,23 +12,141 @@ var flash         = require('connect-flash');
 var configDB      = require('./config/database.js');
 var socket        = require('./config/socket.js');
 
+//models
+var Group         = require('./app/models/group.js');
+var Discussion    = require('./app/models/discussion.js');
+var Comment       = require('./app/models/comment.js');
+
 var app = express();
 
 //socket io setup
 try {
   var server   = require('http').Server(app);
   var io       = require('socket.io')(8080);
+  var websockets = {};
+  var socket_count = 0;
 
   io.on('connection', function(client){
-    console.log('connected to client');
-    client.on('init', function(args){
-      console.log('got an init');
-      console.log(args);
+
+    client.on('init', function(data){
+      console.log('got an init from client:', client.id, ' with profile:', data.profile);
+      //console.log(data);
       //client.send('message to client');
+      client.profile = data.profile;
+      websockets[client.id] = client;
+      client.emit('clientId', client.id);
+
     });
-    client.on('discussion:new', function(args){
+
+    client.on('disconnect', function(data){
+      for(i in websockets){
+        console.log(websockets[i].id, ' ', websockets[i].profile);
+        if(websockets[i].id == client.id){
+          console.log('removing ', client.id, ' from the websockets list');
+          delete websockets[i];
+        }
+      }
+    });
+
+
+    client.on('select_profile', function(data){
+
+    });
+
+    client.on('discussion:new', function(data){
       console.log('got a discussion:new');
-      console.log(args);
+      console.log(data);
+      console.log(websockets[data.userID]);
+      try {
+        var newd = new Discussion({
+          title: data.title,
+          description: data.desc,
+          parent_id: data.group
+        });
+
+        var error = false;
+
+        var newcom = new Comment({
+          content: data.text,
+          parent_profile: data.profile,
+          parent_comment: newd._id,
+        });
+        newd.comment = newcom._id;
+        newd.save(function(err){
+          if(err) {
+            console.log(err);
+            error = true;
+          }
+        });
+        newcom.save(function(err){
+          if(err) {
+            console.log(err);
+            error = true;
+          }
+        });
+
+        Group
+          .findById(data.group)
+          .exec(function(err, doc){
+            doc.discussion_list.push(newd._id);
+            doc.save(function(err){
+              if(err) {
+                console.log(err);
+                error = true;
+              }
+            });
+            for(i in doc.subscribed_profiles){
+              for(j in websockets){
+                if(doc.subscribed_profiles[i] == websockets[j].profile){
+                  console.log(doc.subscribed_profiles[i], ' is subscribed to that group, sending them the new message');
+                  client.emit('discussion:new', data);
+                }
+              }
+            }
+          });
+
+        if(error){
+          res.sendStatus(500);
+        } else {
+          res.send('success');
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+
+      }
+
+
+
+
+      // Group
+      //   .findOne({
+      //     _id: data.group
+      //   })
+      //   .exec(function(err, doc){
+      //     if(err){
+      //       console.log(err);
+      //       return;
+      //     }
+      //     if(!doc){
+      //       console.log("no group found");
+      //       return;
+      //     }
+      //     c = new Comment({
+      //       content: data.text,
+      //       parent_profile: data.profile,
+      //     });
+      //     c.save();
+      //     d = new Discussion({
+      //       parent_id: doc._id,
+      //       comment: c._id,
+      //       title: data.title,
+      //       description: data.desc
+      //     });
+      //     d.save();
+      //     doc.discussion_list.push(d._id);
+      //     doc.save();
+      //   });
     });
     return
   });

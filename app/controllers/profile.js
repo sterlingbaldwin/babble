@@ -46,7 +46,7 @@ module.exports.controller = function(app) {
               docs[access].subscribed_groups.forEach(function(group){
                 calls.push(function(cb){
                   Group
-                    .findById(group)
+                    .findOne({_id:group})
                     .exec(function(err, doc){
                       console.log('pushing into group_info');
                       console.log(doc);
