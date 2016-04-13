@@ -2,7 +2,7 @@
 (function() {
   var babble;
 
-  babble = angular.module('babble', ['babble.profile', 'babble.profile_view', 'babble.group_view', 'ngSanitize']).factory('socket', function($rootScope) {
+  babble = angular.module('babble', ['babble.profile', 'babble.profile_view', 'babble.group_view', 'ngSanitize', 'ngAnimate']).factory('socket', function($rootScope) {
     var socket;
     socket = io.connect("http://localhost:8080");
     return {

@@ -1,4 +1,4 @@
-angular.module('babble.profile_view', ['ngSanitize']).controller('ProfileViewControl', [
+angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('ProfileViewControl', [
   '$scope', '$http', 'socket', function($scope, $http, socket) {
 
 
@@ -51,6 +51,7 @@ angular.module('babble.profile_view', ['ngSanitize']).controller('ProfileViewCon
         discussion: $scope.selected_discussion,
         group: $scope.selected_group
       });
+      $scope.codeMirror.setValue('');
     }
 
     $scope.select_discussion = function(discussion){
@@ -217,6 +218,9 @@ angular.module('babble.profile_view', ['ngSanitize']).controller('ProfileViewCon
     }
 
     $scope.group_compare = function(a,b) {
+      if(!a || !b){
+        return 0;
+      }
       if (a.name < b.name)
         return -1;
       else if (a.name > b.name)

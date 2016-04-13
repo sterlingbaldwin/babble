@@ -82,6 +82,7 @@
       <img src="/images/ic_send_black_24dp/web/ic_send_black_24dp_1x.png" alt="" />
     </button>
     <div class="card indigo lighten-4"
+         ng-animate="'animate'"
          ng-repeat="m in $parent.message_list | reverse">
       <div class="card" ng-bind-html="m.content"></div>
       <p>
