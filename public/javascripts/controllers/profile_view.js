@@ -1,4 +1,4 @@
-angular.module('babble.profile_view', []).controller('ProfileViewControl', [
+angular.module('babble.profile_view', ['ngSanitize']).controller('ProfileViewControl', [
   '$scope', '$http', 'socket', function($scope, $http, socket) {
 
 
@@ -163,13 +163,13 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       $scope.$parent.selected_group = group._id;
       $scope.$parent.selected_group_obj = group;
 
-      var index = 0;
-      for(i in $scope.$parent.group_list){
-        if($scope.$parent.group_list[i] && $scope.$parent.group_list[i].id == $scope.$parent.selected_group){
-          index = i;
-          break;
-        }
-      }
+      // var index = 0;
+      // for(i in $scope.$parent.group_list){
+      //   if($scope.$parent.group_list[i] && $scope.$parent.group_list[i].id == $scope.$parent.selected_group){
+      //     index = i;
+      //     break;
+      //   }
+      // }
 
       $('.selected')
       .addClass('unselected')
@@ -188,7 +188,7 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       .addClass('custom-width-2')
       .removeClass('unselected');
 
-      $scope.group_keys = Object.keys(group);
+      //$scope.group_keys = Object.keys(group);
       $http({
         url: '/group/' + group._id + '/get_discussion_list',
         method: 'GET'

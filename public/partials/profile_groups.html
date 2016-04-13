@@ -45,8 +45,7 @@
        <p>
          {[{d.desc}]}
        </p>
-       <div class="discussion-post unselected_discussion waves-effect left" ng-bind-html="d.text">
-       </div>
+       <div class="discussion-post unselected_discussion waves-effect left" ng-bind-html="d.text"></div>
      </div>
     </div>
   </div>
@@ -82,9 +81,11 @@
     <button type="button" class="btn-floating" ng-click="send_message()">
       <img src="/images/ic_send_black_24dp/web/ic_send_black_24dp_1x.png" alt="" />
     </button>
-    <div class="card" ng-repeat="m in $parent.message_list | reverse">
+    <div class="card indigo lighten-4"
+         ng-repeat="m in $parent.message_list | reverse">
+      <div class="card" ng-bind-html="m.content"></div>
       <p>
-        {[{m}]}
+        --{[{m.by}]} @{[{m.posted}]}
       </p>
     </div>
   </div>

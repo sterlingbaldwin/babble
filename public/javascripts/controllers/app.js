@@ -55,7 +55,11 @@
         $scope.message_list.push(data);
       })
       socket.on('message:list', function(data){
-        $scope.message_list = data.message_list;
+        $scope.message_list = data.message_list.sort(function(a,b){
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return new Date(a.posted) - new Date(b.posted);
+        });;
       })
       $scope.send_message = function(destination, message) {
         message.userID = $scope.userID;
