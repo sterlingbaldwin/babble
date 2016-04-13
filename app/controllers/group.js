@@ -145,7 +145,8 @@ module.exports.controller = function(app) {
                       posts.push({
                         title: disc.title,
                         desc: disc.description,
-                        text: comment.render()
+                        text: comment.render(),
+                        _id: disc._id
                       });
                       cb();
                     });

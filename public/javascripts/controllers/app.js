@@ -25,12 +25,20 @@
         });
       }
     };
-  }).controller('BabbleControl', [
+  })
+  .filter('reverse', function() {
+    return function(items) {
+      return items.slice().reverse();
+    };
+  })
+  .controller('BabbleControl', [
     '$scope', '$http', 'socket', function($scope, $http, socket) {
       $scope.profile = {};
       $scope.socket = socket;
       $scope.group_list = [];
       $scope.selected_group = null;
+      $scope.selected_discussion = null;
+      $scope.message_list = [];
       socket.on('connect', function(args) {
         console.log('Socket connected');
       });
@@ -43,6 +51,12 @@
         console.log(args);
         return $scope.userID = args;
       });
+      socket.on('message:new', function(data){
+        $scope.message_list.push(data);
+      })
+      socket.on('message:list', function(data){
+        $scope.message_list = data.message_list;
+      })
       $scope.send_message = function(destination, message) {
         message.userID = $scope.userID;
         console.log('sending');

@@ -167,14 +167,14 @@ module.exports.controller = function(app) {
                 profile: docs[profile]
               });
             } else {
-              res.render('index');
+              res.redirect('/');
             }
           } else {
-            res.render('index');
+            res.redirect('/');
           }
         })
     } else {
-      res.render('index');
+      res.redirect('/');
     }
   });
 

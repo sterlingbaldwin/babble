@@ -14,4 +14,9 @@ Comment.methods.render = function(){
   return markdown.toHTML(this.content);
 }
 
+Comment.methods.translateMarkdown = function(){
+  this.content = markdown.toHTML(this.content);
+  this.save();
+}
+
 module.exports = mongoose.model('Comment', Comment);

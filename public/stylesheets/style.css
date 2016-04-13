@@ -9,9 +9,29 @@ a {
   color: #00B7FF;
 }
 
+#chat-field {
+  border: solid black 1px;
+  border-radius: 1em;
+}
+
 .wrapper {
   width: 80%;
   margin-bottom: 50em;
+}
+
+.discussion-wrapper {
+  background-color: #009688!important;
+  padding: 1em;
+  overflow-y: scroll;
+  height: 50%;
+}
+
+.chat-wrapper {
+  background-color: #555;
+  padding: 1em;
+  overflow-y: scroll;
+  height: 50%;
+  transition: all .25s ease-in-out;
 }
 
 .span-padding {
@@ -42,12 +62,7 @@ a {
 
 }
 
-.discussion-wrapper {
-  background-color: #009688!important;
-  padding: 1em;
-  overflow-y: scroll;
-  height: 50%;
-}
+
 
 .discussion-context {
 
@@ -77,6 +92,9 @@ a {
   width: 55% !important;
 }
 
+.custom-width-4 {
+  width: 52% !important;
+}
 
 .custom-offset-1 {
   margin-left: 3% !important;

@@ -9,6 +9,7 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       $scope.friend_list = [];
       $scope.public_group_list = [];
       $scope.$parent.send_profile($scope.profile);
+      $scope.selected_discussion = false;
     }
 
     $scope.post_new_discussion = function(){
@@ -44,8 +45,114 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       $("#group_create_modal").foundation("reveal", "open");
     }
 
+    $scope.send_message = function(){
+      $scope.$parent.send_message('chat:new', {
+        text: $scope.codeMirror.getValue(),
+        discussion: $scope.selected_discussion,
+        group: $scope.selected_group
+      });
+    }
+
     $scope.select_discussion = function(discussion){
       console.log(discussion);
+      if($scope.selected_discussion){
+        $('html, body')
+          .animate({
+            scrollTop: $('#discussion_' + discussion._id).offset().top - 30
+        }, 500);
+        $('.indigo').removeClass('indigo');
+        $('#discussion_' + discussion._id)
+        .addClass('indigo darken-2');
+
+        $('#chat-wrapper')
+        .animate({
+            top: $("#discussion_" + discussion._id).offset().top - 30,
+            left: 0
+          }, 300, function() {
+            //callback
+        });
+
+        $scope.codeMirror.setValue('');
+      } else {
+        $scope.page_scroll = $('body').scrollTop();
+        $scope.discussion_wrapper_top = $('#discussion-wrapper').css('top');
+        $('#group-wrapper')
+        .animate({
+          left:-1000
+        }, 400);
+
+        $('#discussion-wrapper')
+        .animate({
+          left: -550,
+          top: -5
+        }, 400, function(){
+          $('html, body')
+            .animate({
+              scrollTop: $('#discussion_' + discussion._id).offset().top - 30
+          }, 500);
+
+          $('#chat-wrapper')
+          .fadeIn()
+          .css({
+            top:1000,position:'absolute'
+          })
+          .animate({
+              top: $("#discussion_" + discussion._id).offset().top - 30,
+              left: 0
+            }, 300, function() {
+              //callback
+          });
+        })
+        .removeClass('custom-width-3')
+        .addClass('custom-width-1')
+        .css("height", "100%")
+        .css("overflow-y", "hidden");
+
+        $('#discussion_' + discussion._id)
+        .addClass('indigo darken-2');
+
+        $scope.selected_discussion = discussion;
+
+        $scope.codeMirror = CodeMirror(
+          $('#chat-field')[0],
+          {
+            mode: 'twilight',
+            lineNumbers: true,
+            viewportMargin: Infinity
+          }
+        );
+      }
+      $scope.$parent.send_message('discussion:get_messages', {
+        discussion: discussion
+      });
+    }
+
+    $scope.discussion_back = function(){
+      $scope.selected_discussion = false;
+      $('.indigo').removeClass('indigo');
+
+      $('#group-wrapper')
+      .animate({
+        left: 0
+      }, 500);
+
+      $('#chat-wrapper')
+      .animate({
+        top: 1000
+      }, 300);
+
+      $('#discussion-wrapper')
+      .animate({
+        left: 0,
+        top: $scope.discussion_wrapper_top
+      }, 500)
+      .addClass('custom-width-3')
+      .removeClass('custom-width-1')
+      .css("height", "100%")
+      .css("overflow-y", "scroll");
+
+      window.scrollTo(0, $scope.page_scroll);
+
     }
 
     $scope.select_group = function(group){
@@ -63,18 +170,24 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
           break;
         }
       }
-      //$scope.move($scope.$parent.group_list, index, 0);
-      //$scope.$apply();
-      $('.selected').addClass('unselected');
-      $('.selected').removeClass('custom-width-2');
-      $('.group_card').removeClass('custom-offset-2');
-      $('.group_card').addClass('custom-offset-1');
-      $('.group_card').addClass('custom-width-1');
-      $('.selected').removeClass('selected');
-      // $('.selected').removeClass('large-offset-2');
-      $('#group_' + group._id).addClass('selected');
-      $('#group_' + group._id).addClass('custom-width-2');
-      $('#group_' + group._id).removeClass('unselected');
+
+      $('.selected')
+      .addClass('unselected')
+      .removeClass('custom-width-2');
+
+      $('.group_card')
+      .removeClass('custom-offset-2')
+      .addClass('custom-offset-1')
+      .addClass('custom-width-1');
+
+      $('.selected')
+      .removeClass('selected');
+
+      $('#group_' + group._id)
+      .addClass('selected')
+      .addClass('custom-width-2')
+      .removeClass('unselected');
+
       $scope.group_keys = Object.keys(group);
       $http({
         url: '/group/' + group._id + '/get_discussion_list',
@@ -82,10 +195,13 @@ angular.module('babble.profile_view', []).controller('ProfileViewControl', [
       }).then(function(res){
         console.log(res);
         group.discussion_list = res.data;
-        $('html, body').animate({
+        $('html, body')
+        .animate({
             scrollTop: $("#group_" + group._id).offset().top - 50
         }, 1000);
-        $('.discussion-wrapper').fadeIn()
+
+        $('.discussion-wrapper')
+        .fadeIn()
         .css({
           top:1000,position:'absolute'
         })
