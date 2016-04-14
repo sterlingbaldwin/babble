@@ -1,5 +1,5 @@
 angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('ProfileViewControl', [
-  '$scope', '$http', 'socket', function($scope, $http, socket) {
+  '$scope', '$http', 'socket', '$sce', function($scope, $http, socket, $sce) {
 
 
     $scope.init = function(){
@@ -15,6 +15,10 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
     $scope.post_new_discussion = function(){
       var title = $('#new-discussion-name-field').val();
       var desc = $('#new-discussion-description-field').val();
+      $('#new-discussion-name-field').val('');
+      $('#new-discussion-description-field').val('');
+      //$scope.codeMirror = undefined;
+      $('#new_discussion_modal').foundation('reveal', 'close');
       data = {
         title: title,
         desc: desc,
@@ -22,12 +26,13 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
         group: $scope.$parent.selected_group,
         profile: $scope.profile
       }
-
+      $('#discussion-post-field').empty();
       $scope.$parent.send_message('discussion:new', data);
     }
 
     $scope.new_discussion_modal_trigger = function(group){
       $('#new_discussion_modal').foundation('reveal', 'open');
+      $('#discussion-post-field').empty();
       $scope.codeMirror = CodeMirror(
         $('#discussion-post-field')[0],
         {
@@ -36,6 +41,9 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
           viewportMargin: Infinity
         }
       );
+      $scope.codeMirror.setValue('\n\n\n\n\n\n\n\n\n');
+      $scope.codeMirror.setCursor({line:0, ch:0});
+      //$scope.codeMirror.setValue('');
       //$('.CodeMirror').addClass('CodeMirror-focused');
       //$scope.codeMirror.setValue('\n\n\n\n\n\n\n\n\n\n');
       // $scope.codeMirror.setCursor(1);

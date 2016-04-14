@@ -143,6 +143,7 @@ try {
                         console.log(err);
                         return;
                       }
+                      doc.translateMarkdown();
                       comments.push({
                         posted: doc.posted,
                         by: doc.parent_profile,
@@ -192,6 +193,7 @@ try {
             error = true;
           }
         });
+        newcom.translateMarkdown();
         newcom.save(function(err){
           if(err) {
             console.log(err);
@@ -213,7 +215,14 @@ try {
               for(j in websockets){
                 if(doc.subscribed_profiles[i] == websockets[j].profile){
                   console.log(doc.subscribed_profiles[i], ' is subscribed to that group, sending them the new message');
-                  client.emit('discussion:new', data);
+                  client.emit('discussion:new', {
+                    text: newcom.content,
+                    parent_profile: newcom.parent_profile,
+                    _id: newcom._id,
+                    posted: newcom.posted,
+                    title: newd.title,
+                    desc: newd.description
+                  });
                 }
               }
             }

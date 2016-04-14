@@ -32,7 +32,7 @@
     };
   })
   .controller('BabbleControl', [
-    '$scope', '$http', 'socket', function($scope, $http, socket) {
+    '$scope', '$http', 'socket', '$sce', function($scope, $http, socket, $sce) {
       $scope.profile = {};
       $scope.socket = socket;
       $scope.group_list = [];
@@ -52,6 +52,7 @@
         return $scope.userID = args;
       });
       socket.on('message:new', function(data){
+
         $scope.message_list.push(data);
       })
       socket.on('message:list', function(data){
@@ -76,6 +77,7 @@
       };
       socket.on('discussion:new', function(data) {
         console.log('Got a new discussion!');
+        $scope.selected_group_obj.discussion_list = [data].concat($scope.selected_group_obj.discussion_list);
         return console.log(data);
         for(i in $scope.group_list){
           if($scope.group_list[i].id == data.group){
