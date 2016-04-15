@@ -1,14 +1,11 @@
 <div ng-include="" src="'/partials/topbar.html'"></div>
 
 <div class="large-4 large-offset-3">
-  <h1 style="text-align: center;"> {{{title}}} </h1>
+  <h1 style="text-align: left;"> {{{title}}} </h1>
   <p style="text-align: left; color: #000;"> Babble is a real time forum, or theaded chat room, for small to medium sized group communication. </p>
+  <button class="btn waves-effect waves-light" ng-click="login_modal_trigger()">Login or register</button>
 </div>
 
-<button class="large-offset-3"
-        ng-click="$('#privacy_policy_model').foundation('reveal', 'open')">
-        Privacy Policy
-</button>
 <div ng-include="" src="'partials/register_user.html'"></div>
 <div ng-include="" src="'partials/login_user.html'"></div>
 <div ng-include="" src="'partials/privacypolicy.html'"></div>

@@ -117,10 +117,28 @@
       };
       $scope.register_modal_trigger = function() {
         $('#register_modal').foundation('reveal', 'open');
+        var go = document.getElementById("register-button");
+        var txt = document.getElementById("reg-password-field");
+
+        txt.addEventListener("keypress", function(event) {
+            if (event.keyCode == 13){
+              event.preventDefault();
+              go.click();
+            }
+        });
       };
       $scope.login_modal_trigger = function() {
         $('#register_modal').foundation('reveal', 'close');
         $('#login_modal').foundation('reveal', 'open');
+        var go = document.getElementById("login-button");
+        var txt = document.getElementById("login-password-field");
+
+        txt.addEventListener("keypress", function(event) {
+            if (event.keyCode == 13){
+              event.preventDefault();
+              go.click();
+            }
+        });
       };
       $scope.login = function() {
         var data;
