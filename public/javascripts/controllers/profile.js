@@ -14,21 +14,15 @@ angular.module('babble.profile', []).controller('ProfileControl', [
       $scope.selected_profile = profile;
       $scope.$parent.profile = profile;
       $scope.$parent.send_profile(profile);
-      //remove other selected profiles style
-      $('.fa-circle')
-        .removeClass('fa-circle')
-        .addClass('fa-circle-o')
-        .parents('.card')
-          .removeClass('large-6')
-          .addClass('large-4');
 
-      //update the style for the selected profile
-      $('#' + profile.name + '_select_circle')
-        .addClass('fa-circle')
-        .removeClass('fa-circle-o');
+      $('.teal')
+      .addClass('unselected')
+      .removeClass('teal');
 
       $('#' + profile.name + '_box')
         .addClass('large-6')
+        .addClass('teal')
+        .removeClass('unselected')
         .removeClass('large-4');
     }
 

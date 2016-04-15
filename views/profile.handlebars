@@ -6,8 +6,11 @@
 <div ng-controller="ProfileControl" ng-init="init()">
   <h3 class="large-offset-1"> Welcome {[{user.local.email}]} to your profile page </h3>
 
-  <div ng-repeat="profile in profile_list" class="card large-4 large-offset-1  rows" id="{[{profile.name}]}_box">
-    <div class="content">
+  <div ng-repeat="profile in profile_list"
+       class="card large-4 large-offset-1 rows unselected waves-effect waves-light"
+       ng-click="select_profile(profile)"
+       id="{[{profile.name}]}_box">
+    <div class="content" style="border: 4px solid white; padding: 1em;">
       <h2 class="title"> {[{profile.name}]} </h2>
       <p> reputation: {[{profile.rep}]} </p>
 
