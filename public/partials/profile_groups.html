@@ -1,6 +1,9 @@
 <div class="wrapper">
-  <div class="columns" id="group-wrapper">
-    <div class="card group_card waves-effect waves-light custom-offset-2 unselected" ng-repeat="group in $parent.group_list" ng-click="select_group(group)" id="group_{[{group._id}]}">
+  <div class="" id="group-wrapper">
+    <div class="card group_card waves-effect waves-light custom-offset-2 unselected"
+         ng-repeat="group in $parent.group_list"
+         ng-click="select_group(group)"
+         id="group_{[{group._id}]}">
       <div class="" style="border: 4px solid white; padding: 1em;">
         <h2>
           {[{group.name}]}
@@ -16,7 +19,25 @@
         </p>
       </div>
     </div>
+    <div class="custom-width-1 custom-offset-2 card">
+      <div ng-show="group_list && group_list.length == 0">
+        <h1>No groups!</h1>
+        <p>
+          Looks like you're not subscribed to any groups
+        </p>
+      </div>
+      <p style="">
+        <a href="" style="margin-right:0px!important;" ng-click='create_group_trigger()'>
+          create a group
+        </a>
+        or search for a
+        <a href="" ng-click='public_group_search()'>
+          public group
+        </a>
+      </p>
+    </div>
   </div>
+
   <div class="columns small-offset-5 custom-width-3 discussion-wrapper card"
        ng-show="selected_group == selected_group_obj._id"
        id="discussion-wrapper">
@@ -49,6 +70,7 @@
      </div>
     </div>
   </div>
+
   <div class="chat-wrapper card custom-offset-3 custom-width-4"
        style="top:1000; height:100%;"
        ng-show="selected_discussion"
@@ -75,9 +97,7 @@
          </li>
        </ul>
       </div>
-    <div class="" id="chat-field">
-
-    </div>
+    <div class="" id="chat-field"></div>
     <button type="button" class="btn-floating" ng-click="send_message()">
       <img src="/images/ic_send_black_24dp/web/ic_send_black_24dp_1x.png" alt="" />
     </button>
@@ -86,24 +106,10 @@
          ng-repeat="m in $parent.message_list | reverse">
       <div class="card" ng-bind-html="m.content"></div>
       <p>
-        --{[{m.by}]} @{[{m.posted}]}
+        -- {[{m.by}]} @ {[{m.posted}]}
       </p>
     </div>
   </div>
 
-  <div class="custom-offset-2">
-    <div ng-show="group_list && group_list.length == 0">
-      <h1>No groups!</h1>
-      <p>
-        Looks like you're not subscribed to any groups, maybe
-    </div>
-      <a href="" ng-click='create_group_trigger()'>
-        create a group
-      </a>
-      or search for a
-      <a href="" ng-click='public_group_search()'>
-        public group
-      </a>
-    </p>
-  </div>
+
 </div>

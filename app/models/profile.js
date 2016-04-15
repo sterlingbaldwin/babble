@@ -13,7 +13,8 @@ var Profile = new Schema({
     // content: String,
     // status: String
   }],
-  friend_list: [{ type: Schema.Types.ObjectId, ref: 'Profile' }]
+  friend_list: [{ type: Schema.Types.ObjectId, ref: 'Profile' }],
+  profile_picture_path: { type: String }
 });
 
 

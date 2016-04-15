@@ -3,24 +3,30 @@
     <section class="top-bar-section">
       <ul class="left">
         <li class="active">
-          <a href="/"> home </a>
+          <a href="/"> Home </a>
         </li>
         <li>
           <a href="JavaScript:void(0)" class="waves-effect waves-light" ng-click="login_modal_trigger()" ng-show="data.status == 'loggedout'">
             <span class="fa fa-user">
-            Log In
+            Log in
           </a>
           <a href="JavaScript:void(0)" class="waves-effect waves-light" ng-click="logout()" ng-show="data.status == 'loggedin'">
             <span class="fa fa-user">
-            Log Out
+            Log out
+          </a>
+        </li>
+        <li>
+          <a href="/profile" ng-show="data.status == 'loggedin' && window.location.pathname.toString() != '/profile'">
+            <span class="fa fa-user">
+            Profile
           </a>
         </li>
       </ul>
-      <ul class="right">
+      <!-- <ul class="right">
         <li>
           <a href="JavaScript:void(0)" ng-click=""> Lorem Ipsum </a>
         </li>
-      </ul>
+      </ul> -->
     </section>
   </ul>
 </nav>
