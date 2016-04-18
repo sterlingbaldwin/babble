@@ -96,6 +96,7 @@ a {
   cursor: hand;
 }
 
+
 .unselected_discussion:hover {
   /*background-color: #388E3C!important;*/
   /*cursor: pointer;
@@ -122,6 +123,9 @@ a {
 
 .selected {
   background-color: #009688!important;
+}
+
+.selected:hover {
   cursor: default!important;
 }
 

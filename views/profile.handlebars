@@ -14,16 +14,21 @@
       <h2 class="title"> {[{profile.name}]} </h2>
       <p> reputation: {[{profile.rep}]} </p>
 
-      <div ng-show="selected_profile.name == profile.name && profile.notifications" class="log_item_holder card">
-        <div class="profile-notification" ng-repeat="n in profile.notifications">
+      <div ng-show="selected_profile.name == profile.name && profile.notifications"
+           class="log_item_holder card yellow accent-4 unselected"
+           style=" width:80%;">
+        <div class="profile-notification yellow lighten-5"
+             ng-repeat="n in profile.notifications"
+             style="border-radius:2px; padding:2px;margin-left:2px;">
           <p>{[{n.type}]}</p>
           <p>{[{n.content}]}</p>
         </div>
       </div>
 
       {{!-- Selects profile from profile_list --}}
-      <button ng-click="select_profile(profile)" class="btn waves-effect waves-light">
-        <span id="{[{profile.name}]}_select_circle"  class="fa fa-circle-o"></span>
+      <button ng-click="select_profile(profile)"
+              class="btn waves-effect waves-light profile_select_btn"
+              id="{[{profile.name}]}_select">
         Select
       </button>
 

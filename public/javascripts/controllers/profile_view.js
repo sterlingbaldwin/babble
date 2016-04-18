@@ -64,6 +64,7 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
 
     $scope.select_discussion = function(discussion){
       console.log(discussion);
+
       if($scope.selected_discussion){
         $('html, body')
           .animate({
@@ -82,28 +83,43 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
         });
 
         $scope.codeMirror.setValue('');
+        $('#discussion_back')
+        .fadeIn()
+        .css({
+          top: $('#discussion_' + discussion._id).offset().top - 30,
+          // left: $('.left-off-canvas-menu').width(),
+          'border-radius': '5px',
+          'height': $('.unselected_discussion').height() - 50,
+          position:'absolute',
+          opacity: 1
+        },300);
+
       } else {
         $scope.page_scroll = $('body').scrollTop();
         $scope.discussion_wrapper_top = $('#discussion-wrapper').css('top');
-        $('#group-wrapper')
-        .animate({
-          left:-1000
-        }, 400);
+        // $('#group-wrapper')
+        // .animate({
+        //   left:-1000
+        // }, 400);
+        $('#group-wrapper').css('opacity', '0');
 
+
+        var discussionOffset = $('#discussion-wrapper').offset();
         $('#discussion-wrapper')
         .animate({
-          left: -550,
+          left: -1*(discussionOffset.left - $('.left-off-canvas-menu').width() - 50),
           top: -5
         }, 400, function(){
           $('html, body')
             .animate({
-              scrollTop: $('#discussion_' + discussion._id).offset().top - 30
+              scrollTop: $('#discussion_' + discussion._id).offset().top - 50
           }, 500);
 
           $('#chat-wrapper')
           .fadeIn()
           .css({
-            top:1000,position:'absolute'
+            top:1000,
+            position:'absolute'
           })
           .animate({
               top: $("#discussion_" + discussion._id).offset().top - 30,
@@ -111,6 +127,17 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
             }, 300, function() {
               //callback
           });
+
+          $('#discussion_back')
+          .fadeIn()
+          .css({
+            top: $('#discussion_' + discussion._id).offset().top - 30,
+            // left: $('.left-off-canvas-menu').width(),
+            'border-radius': '5px',
+            'height': $('.unselected_discussion').height() - 50,
+            position:'absolute',
+            opacity: 1
+          },300);
         })
         .removeClass('custom-width-3')
         .addClass('custom-width-1')
@@ -131,15 +158,23 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
           }
         );
       }
+
       $scope.$parent.send_message('discussion:get_messages', {
         discussion: discussion
       });
     }
 
     $scope.discussion_back = function(){
+
+      $('#discussion_back')
+      .css({
+        top: 1000,
+        opacity: 0
+      },300);
+
       $scope.selected_discussion = false;
       $('.indigo').removeClass('indigo');
-
+      $('#group-wrapper').css('opacity', '1');
       $('#group-wrapper')
       .animate({
         left: 0
@@ -169,6 +204,7 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
         return;
       }
       console.log(group);
+      $('.discussion-wrapper').css('opacity', '1');
       $scope.$parent.selected_group = group._id;
       $scope.$parent.selected_group_obj = group;
 
@@ -343,20 +379,24 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
     }
 
     $scope.select_config_click = function(){
-      $scope.init();
+      $scope.reset();
       $scope.selected_tab = "config"
     }
     $scope.select_home_click = function(){
-      $scope.init();
+      $scope.reset();
     }
     $scope.select_group_click = function(){
-      $scope.init();
+      $scope.reset();
       $scope.selected_tab = "group"
       $scope.get_groups();
     }
     $scope.select_discussion_click = function(){
-      $scope.init();
       $scope.selected_tab = "discussions"
+    }
+
+    $scope.reset = function(){
+      $scope.init();
+      $('.discussion-wrapper').css('opacity', '0');
     }
 
     $scope.move = function(array, from, to) {

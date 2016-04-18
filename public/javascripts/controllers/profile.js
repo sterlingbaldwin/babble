@@ -15,13 +15,18 @@ angular.module('babble.profile', []).controller('ProfileControl', [
       $scope.$parent.profile = profile;
       $scope.$parent.send_profile(profile);
 
+      $('.profile_select_btn').css('opacity', '1');
+      $('#' + profile.name + '_select').css('opacity', '0');
+
       $('.teal')
       .addClass('unselected')
-      .removeClass('teal');
+      .removeClass('teal')
+      .removeClass('selected');
 
       $('#' + profile.name + '_box')
         .addClass('large-6')
         .addClass('teal')
+        .addClass('selected')
         .removeClass('unselected')
         .removeClass('large-4');
     }

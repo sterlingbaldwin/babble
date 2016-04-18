@@ -38,16 +38,19 @@
     </div>
   </div>
 
+  <a class="btn-floating btn-large waves-effect waves-light red left row"
+     style="opacity:0;"
+     ng-click="discussion_back()"
+     id="discussion_back">
+    <i class="material-icons">
+     <img src="/images/ic_arrow_back_black_24dp/web/ic_arrow_back_black_24dp_1x.png" alt="back" />
+    </i>
+  </a>
+
   <div class="columns small-offset-5 custom-width-3 discussion-wrapper card"
        ng-show="selected_group == selected_group_obj._id"
-       id="discussion-wrapper">
-    <a class="btn-floating btn-large waves-effect waves-light red left row"
-       ng-show="selected_discussion"
-       ng-click="discussion_back()">
-      <i class="material-icons">
-       <img src="/images/ic_arrow_back_black_24dp/web/ic_arrow_back_black_24dp_1x.png" alt="back" />
-      </i>
-    </a>
+       id="discussion-wrapper"
+       style="opacity:0;">
     <a class="btn-floating btn-large waves-effect waves-light blue darken-1 right row"
        ng-click="new_discussion_modal_trigger(selected_group_obj)">
       <i class="material-icons" data-tooltip aria-haspopup="true" title="New Discussion">
