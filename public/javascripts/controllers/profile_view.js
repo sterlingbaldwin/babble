@@ -65,7 +65,10 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
     $scope.select_discussion = function(discussion){
       console.log(discussion);
 
-      $('#discussion_' + discussion._id).removeClass('cyan');
+      $('#discussion_' + discussion._id)
+      .removeClass('cyan')
+      .removeClass('accent-4');
+      
       if(!$('.unselected_discussion').hasClass('cyan')){
         $('.group_border').css({
           'border-color': '#fff'
@@ -161,8 +164,6 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
         $('#discussion_' + discussion._id)
         .addClass('indigo darken-2');
 
-        $scope.selected_discussion = discussion;
-
         $scope.codeMirror = CodeMirror(
           $('#chat-field')[0],
           {
@@ -172,7 +173,7 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
           }
         );
       }
-
+      $scope.selected_discussion = discussion;
       $scope.$parent.send_message('discussion:get_messages', {
         discussion: discussion
       });

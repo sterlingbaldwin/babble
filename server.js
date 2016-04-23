@@ -110,19 +110,65 @@ try {
                   //TODO:
                   //user is in chat and there is a message to another discussion in the same group
                   console.log(websockets[i].profile, 'is in chat',websockets[i].discussion._id,'and there is a message to another discussion');
-                } else {
-                  console.log(websockets[i].profile, 'is not in a discussion');
+                  var name = websockets[i].profile;
+                  var j = i;
                   //next send a message to any clients that are subscribed to the group
                   //but not in any discussion
                   //pack all the db calls into a list
                   calls.push(function(callback){
-                    console.log('looking up', websockets[i].profile);
+                    console.log('looking up', name);
                     Profile.findOne({
-                      name: websockets[i].profile
+                      name: name
                     }).exec(function(err, profile){
                       if(err) console.log(err);
                       if(typeof profile === "undefined") {
-                       console.log('could not find profile', websockets[i].profile);
+                       console.log('could not find profile', name);
+                       return;
+                      }
+                      console.log('is discussion.parent_id in profile.subscribed_groups?');
+                      //is the user subscribed to the group this message was sent to?
+                      //discussion.parent_id is the discussion that just got a new message
+                      console.log(discussion.parent_id.toString(), profile.subscribed_groups);
+                      for(k in Object.keys(profile.subscribed_groups)){
+                       if(typeof profile.subscribed_groups[k] === "undefined" || !(profile.subscribed_groups[k])){
+                         continue;
+                       }
+                       console.log(profile.subscribed_groups[k].toString());
+                       console.log(client.profile);
+                       console.log(websockets[j].profile);
+                       console.log(name);
+                       if(discussion.parent_id.toString() == profile.subscribed_groups[k].toString() ){
+                         if(websockets[j].id == client.id){
+                           console.log('not sending to client that sent message', client.profile);
+                           continue;
+                         }
+                         console.log('sending group:new_message to', websockets[j].profile);
+                         websockets[j].emit('group:new_message', {
+                           group: discussion.parent_id,
+                           discussion: discussion._id
+                         });
+                         return;
+                       } else {
+                         console.log(discussion.parent_id.toString(), 'not equal to', profile.subscribed_groups[k].toString());
+                       }
+                      }
+                      callback();
+                    });
+                  });
+                } else {
+                  console.log(websockets[i].profile, 'is not in a discussion');
+                  var name = websockets[i].profile
+                  //next send a message to any clients that are subscribed to the group
+                  //but not in any discussion
+                  //pack all the db calls into a list
+                  calls.push(function(callback){
+                    console.log('looking up', name);
+                    Profile.findOne({
+                      name: name
+                    }).exec(function(err, profile){
+                      if(err) console.log(err);
+                      if(typeof profile === "undefined") {
+                       console.log('could not find profile', name);
                        return;
                       }
                       console.log('is discussion.parent_id in profile.subscribed_groups?');
@@ -154,7 +200,7 @@ try {
                   });
                 }
               }
-              console.log('starting async calls');
+              console.log('starting async calls with calls length = ', calls.length);
               async.parallel(calls, function(err, result){
                 if(err) console.log(err);
               })
