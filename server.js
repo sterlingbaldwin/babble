@@ -16,6 +16,7 @@ var async         = require('async');
 var Group         = require('./app/models/group.js');
 var Discussion    = require('./app/models/discussion.js');
 var Comment       = require('./app/models/comment.js');
+var Profile       = require('./app/models/profile.js');
 
 var app = express();
 
@@ -53,24 +54,28 @@ try {
 
     });
 
+    client.on('discussion:clear', function(data){
+      client.discussion = undefined;
+    });
+
     client.on('chat:new', function(data){
       console.log(client.profile, 'sent new chat message', data);
-      Discussion
+      Discussion //find the discussion the message was sent to
         .findOne({
           _id: data.discussion._id
         })
-        .exec(function(err, doc){
-          if(err || !doc){
+        .exec(function(err, discussion){
+          if(err || !discussion){
             console.log("error finding discussion");
             console.log(err);
             return;
           }
-          Comment
+          Comment//find the OP of the discussion
             .findOne({
-              _id: doc.comment
+              _id: discussion.comment
             })
-            .exec(function(err, comm){
-              if(err || !comm){
+            .exec(function(err, comment){
+              if(err || !comment){
                 console.log("error finding comment");
                 console.log(err);
                 return;
@@ -78,26 +83,83 @@ try {
               newComm = new Comment({
                 content: data.text,
                 parent_profile: client.profile,
-                parent_comment: comm._id,
+                parent_comment: comment._id,
               });
               newComm.save();
-              comm.comment_list.push(newComm._id);
-              comm.save();
+              comment.comment_list.push(newComm._id);
+              comment.save();
 
               console.log('data.discussion._id',data.discussion._id);
-            //  console.log('websockets',websockets);
-              var profiles = [];
+              //  console.log('websockets',websockets);
+              //var profiles = [];
+              var calls = [];
+              //var profiles_with_group = [];
               for(i in websockets){
-                console.log('i', i);
+                console.log('i', i, websockets[i].profile);
                 //console.log('websockets[i]', websockets[i]);
                 //console.log('websockets[i].client.discussion._id', websockets[i].discussion._id);
-                if(websockets[i].discussion && (websockets[i].discussion._id == data.discussion._id)){
-                  console.log(websockets[i].profile, 'is in discussion', websockets[i].discussion.id, "and is getting message", newComm);
-                  newComm.translateMarkdown();
-                  websockets[i].emit('message:new', newComm);
+                //first send a message to any clients that are in the chat
+                if(typeof websockets[i].discussion !== "undefined"){
+                  console.log(websockets[i].discussion);
+                  if(websockets[i].discussion._id == data.discussion._id){
+                    console.log(websockets[i].profile, 'is in discussion', websockets[i].discussion._id, "and is getting message", newComm);
+                    //newComm.translateMarkdown();
+                    websockets[i].emit('message:new', newComm);
+                    continue;
+                  }
+                  //TODO:
+                  //user is in chat and there is a message to another discussion in the same group
+                  console.log(websockets[i].profile, 'is in chat',websockets[i].discussion._id,'and there is a message to another discussion');
+                } else {
+                  console.log(websockets[i].profile, 'is not in a discussion');
+                  //next send a message to any clients that are subscribed to the group
+                  //but not in any discussion
+                  //pack all the db calls into a list
+                  calls.push(function(callback){
+                    console.log('looking up', websockets[i].profile);
+                    Profile.findOne({
+                      name: websockets[i].profile
+                    }).exec(function(err, profile){
+                      if(err) console.log(err);
+                      if(typeof profile === "undefined") {
+                       console.log('could not find profile', websockets[i].profile);
+                       return;
+                      }
+                      console.log('is discussion.parent_id in profile.subscribed_groups?');
+                      //is the user subscribed to the group this message was sent to?
+                      //discussion.parent_id is the discussion that just got a new message
+                      console.log(discussion.parent_id.toString(), profile.subscribed_groups);
+                      for(k in Object.keys(profile.subscribed_groups)){
+                       if(typeof profile.subscribed_groups[k] === "undefined" || !(profile.subscribed_groups[k])){
+                         continue;
+                       }
+                       console.log(profile.subscribed_groups[k].toString());
+                       if(discussion.parent_id.toString() == profile.subscribed_groups[k].toString() ){
+                         if(websockets[i].id == client.id){
+                           console.log('not sending to client that sent message', client.profile);
+                           continue;
+                         }
+                         console.log('sending group:new_message to', websockets[i].profile);
+                         websockets[i].emit('group:new_message', {
+                           group: discussion.parent_id,
+                           discussion: discussion._id
+                         });
+                         return;
+                       } else {
+                         console.log(discussion.parent_id.toString(), 'not equal to', profile.subscribed_groups[k].toString());
+                       }
+                      }
+                      callback();
+                    });
+                  });
                 }
               }
+              console.log('starting async calls');
+              async.parallel(calls, function(err, result){
+                if(err) console.log(err);
+              })
             });
+
         });
     })
 
@@ -143,7 +205,7 @@ try {
                         console.log(err);
                         return;
                       }
-                      doc.translateMarkdown();
+                      //doc.translateMarkdown();
                       comments.push({
                         posted: doc.posted,
                         by: doc.parent_profile,

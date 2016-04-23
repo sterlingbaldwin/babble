@@ -39,6 +39,7 @@
       $scope.selected_group = null;
       $scope.selected_discussion = null;
       $scope.message_list = [];
+      $scope.unseen_messages = [];
       socket.on('connect', function(args) {
         console.log('Socket connected');
       });
@@ -46,21 +47,40 @@
         console.log("user connected");
         console.log(args);
       });
+      socket.on('group:new_message', function(data){
+        $scope.unseen_messages.push(data);
+        console.log('group:new_message');
+        console.log(data);
+        console.log($scope.group_list);
+        $('#group_' + data.group + "_border")
+        .css({
+          'border-color': '#00e5ff'
+        });
+
+        $('#discussion_' + data.discussion)
+        .addClass('cyan accent-4');
+      })
       socket.on('userID', function(args) {
         console.log("got a userId");
         console.log(args);
         return $scope.userID = args;
       });
       socket.on('message:new', function(data){
-
+        console.log('message:new');
+        data.posted = new Date(data.posted);
         $scope.message_list.push(data);
       })
       socket.on('message:list', function(data){
+        console.log('message:list');
         $scope.message_list = data.message_list.sort(function(a,b){
           // Turn your strings into dates, and then subtract them
           // to get a value that is either negative, positive, or zero.
           return new Date(a.posted) - new Date(b.posted);
-        });;
+        });
+        for(m in $scope.message_list){
+          var d = new Date($scope.message_list[m].posted);
+          $scope.message_list[m].posted = d.toString();
+        }
       })
       $scope.send_message = function(destination, message) {
         message.userID = $scope.userID;

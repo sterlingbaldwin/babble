@@ -298,10 +298,7 @@ module.exports.controller = function(app) {
         if(!(req.body.profile in doc.subscribed_profiles)){
           doc.subscribed_profiles.push(req.body.profile);
           doc.save();
-        }
-
-        Profile
-          .update({
+          Profile.update({
             'name': req.body.profile
           }, {
             $push: {
@@ -310,6 +307,8 @@ module.exports.controller = function(app) {
           }, function(args){
             console.log(args);
           });
+        }
+
       });
   });
 

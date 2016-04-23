@@ -65,6 +65,20 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
     $scope.select_discussion = function(discussion){
       console.log(discussion);
 
+      $('#discussion_' + discussion._id).removeClass('cyan');
+      if(!$('.unselected_discussion').hasClass('cyan')){
+        $('.group_border').css({
+          'border-color': '#fff'
+        });
+      }
+      if(typeof $scope.unseen_messages !== 'undefined'){
+        for(m in $scope.unseen_messages){
+          if($scope.unseen_messages[m].discussion == discussion._id){
+            delete $scope.unseen_messages[m];
+          }
+        }
+      }
+
       if($scope.selected_discussion){
         $('html, body')
           .animate({
@@ -166,6 +180,9 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
 
     $scope.discussion_back = function(){
 
+      $('#chat-field').empty();
+      $scope.codeMirror = undefined;
+
       $('#discussion_back')
       .css({
         top: 1000,
@@ -196,6 +213,8 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       .css("overflow-y", "scroll");
 
       window.scrollTo(0, $scope.page_scroll);
+
+      $scope.$parent.send_message('discussion:clear', {});
 
     }
 

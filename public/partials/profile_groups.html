@@ -4,7 +4,9 @@
          ng-repeat="group in $parent.group_list"
          ng-click="select_group(group)"
          id="group_{[{group._id}]}">
-      <div class="" style="border: 4px solid white; padding: 1em;">
+      <div class="group_border"
+           style="border: 4px solid white; padding: 1em;"
+           id="group_{[{group._id}]}_border">
         <h2>
           {[{group.name}]}
         </h2>
@@ -62,7 +64,9 @@
          ng-click="select_discussion(d)"
          ng-show="selected_group == selected_group_obj._id"
          id="discussion_{[{d._id}]}">
-     <div class="card left" style="margin-left: 10px!important; margin-bottom:1em!important;width:90%;">
+     <div class="card left"
+          style="margin-left: 10px!important; margin-bottom:1em!important;width:90%;"
+          id="discussion_{[{d._id}]}_card">
        <h3>
          {[{d.title}]}
        </h3>
@@ -109,7 +113,7 @@
          ng-repeat="m in $parent.message_list | reverse">
       <div class="card" ng-bind-html="m.content"></div>
       <p>
-        -- {[{m.by}]} @ {[{m.posted}]}
+        -- {[{m.by}]} @ {[{ m.posted }]}
       </p>
     </div>
   </div>
