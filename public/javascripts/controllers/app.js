@@ -98,8 +98,14 @@
       };
       socket.on('discussion:new', function(data) {
         console.log('Got a new discussion!');
-        if(data in $scope.selected_group_obj.discussion_list){
-          return;
+        console.log(data);
+        var d = new Date(data.posted);
+        data.posted = d.toString();
+        for(d in $scope.selected_group_obj.discussion_list){
+          if($scope.selected_group_obj.discussion_list[d]._id == data._id){
+            console.log('this is a duplicate');
+            return;
+          }
         }
         $scope.selected_group_obj.discussion_list = [data].concat($scope.selected_group_obj.discussion_list);
 
@@ -113,16 +119,12 @@
         //and chat window
         //and scroll
         //all need to move down to match the new values of the selected discussion
-        return console.log(data);
-        for(i in $scope.group_list){
-          if($scope.group_list[i].id == data.group){
-//TODO: get this shit working
-          }
-        }
       });
+
       socket.on('message', function(data) {
         return console.log(data);
       });
+
       $scope.data = {
         'status': 'loggedout'
       };

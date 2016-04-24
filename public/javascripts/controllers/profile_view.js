@@ -68,7 +68,7 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       $('#discussion_' + discussion._id)
       .removeClass('cyan')
       .removeClass('accent-4');
-      
+
       if(!$('.unselected_discussion').hasClass('cyan')){
         $('.group_border').css({
           'border-color': '#fff'
@@ -260,6 +260,19 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       }).then(function(res){
         console.log(res);
         group.discussion_list = res.data;
+        for(d in group.discussion_list){
+          if(!group.discussion_list[d] || typeof group.discussion_list[d] === "undefined" || typeof group.discussion_list[d].posted === "undefined"){
+            continue;
+          }
+          var d = new Date(group.discussion_list[d].posted);
+          group.discussion_list[d].posted = d.toString();
+        }
+        group.discussion_list.sort(function(a, b){
+          if(!a || !b || typeof a === "undefined" || typeof b === "undefined"){
+            return 0;
+          }
+          return new Date(b.posted) - new Date(a.posted);
+        });
         $('html, body')
         .animate({
             scrollTop: $("#group_" + group._id).offset().top - 50
