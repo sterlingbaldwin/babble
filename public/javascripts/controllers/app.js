@@ -67,7 +67,8 @@
       });
       socket.on('message:new', function(data){
         console.log('message:new');
-        data.posted = new Date(data.posted);
+        var d = new Date(data.posted);
+        data.posted = d.toString();
         $scope.message_list.push(data);
       })
       socket.on('message:list', function(data){
@@ -97,11 +98,25 @@
       };
       socket.on('discussion:new', function(data) {
         console.log('Got a new discussion!');
+        if(data in $scope.selected_group_obj.discussion_list){
+          return;
+        }
         $scope.selected_group_obj.discussion_list = [data].concat($scope.selected_group_obj.discussion_list);
+
+        setTimeout(function(){
+          $('#discussion_' + data._id)
+          .addClass('cyan')
+          .addClass('accent-4');
+        }, 200);
+
+        //back button
+        //and chat window
+        //and scroll
+        //all need to move down to match the new values of the selected discussion
         return console.log(data);
         for(i in $scope.group_list){
           if($scope.group_list[i].id == data.group){
-
+//TODO: get this shit working
           }
         }
       });

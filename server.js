@@ -157,7 +157,8 @@ try {
                   });
                 } else {
                   console.log(websockets[i].profile, 'is not in a discussion');
-                  var name = websockets[i].profile
+                  var name = websockets[i].profile;
+                  var j = i;
                   //next send a message to any clients that are subscribed to the group
                   //but not in any discussion
                   //pack all the db calls into a list
@@ -181,12 +182,12 @@ try {
                        }
                        console.log(profile.subscribed_groups[k].toString());
                        if(discussion.parent_id.toString() == profile.subscribed_groups[k].toString() ){
-                         if(websockets[i].id == client.id){
+                         if(websockets[j].id == client.id){
                            console.log('not sending to client that sent message', client.profile);
                            continue;
                          }
-                         console.log('sending group:new_message to', websockets[i].profile);
-                         websockets[i].emit('group:new_message', {
+                         console.log('sending group:new_message to', websockets[j].profile);
+                         websockets[j].emit('group:new_message', {
                            group: discussion.parent_id,
                            discussion: discussion._id
                          });
@@ -278,8 +279,6 @@ try {
     client.on('discussion:new', function(data){
       console.log('got a discussion:new');
       console.log(data);
-
-
       try {
         var newd = new Discussion({
           title: data.title,
@@ -323,7 +322,7 @@ try {
               for(j in websockets){
                 if(doc.subscribed_profiles[i] == websockets[j].profile){
                   console.log(doc.subscribed_profiles[i], ' is subscribed to that group, sending them the new message');
-                  client.emit('discussion:new', {
+                  websockets[j].emit('discussion:new', {
                     text: newcom.content,
                     parent_profile: newcom.parent_profile,
                     _id: newcom._id,
