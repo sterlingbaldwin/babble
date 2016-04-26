@@ -253,7 +253,6 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       .addClass('custom-width-2')
       .removeClass('unselected');
 
-      //$scope.group_keys = Object.keys(group);
       $http({
         url: '/group/' + group._id + '/get_discussion_list',
         method: 'GET'

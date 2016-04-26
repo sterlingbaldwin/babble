@@ -11,6 +11,7 @@ var flash         = require('connect-flash');
 var configDB      = require('./config/database.js');
 var socket        = require('./config/socket.js');
 var async         = require('async');
+var multer        = require('multer');
 
 //models
 var Group         = require('./app/models/group.js');
@@ -19,6 +20,46 @@ var Comment       = require('./app/models/comment.js');
 var Profile       = require('./app/models/profile.js');
 
 var app = express();
+
+//setup for image upload
+
+var storage =   multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './public/uploads');
+  },
+  filename: function (req, file, callback) {
+    //console.log(req.originalUrl.split('/').pop());
+    var profile = req.originalUrl.split('/').pop();
+    var newName = profile + '.jpg';
+    Profile.findOne({
+      name: profile
+    })
+    .exec(function(err, doc){
+      if(err || !doc || typeof doc === "undefined"){
+        console.log("error updating profile image path");
+        if(err) console.log(err);
+      } else {
+        doc.profile_picture_path = 'uploads/' + newName;
+        doc.save();
+      }
+    });
+    callback(null, newName);
+  }
+});
+var upload = multer({ storage : storage }).single('userImage');
+app.post('/image_upload/:profile', function(req,res){
+  upload(req,res,function(err) {
+    console.log('got an image upload request');
+    if(err) {
+        console.log(err);
+        return res.end("Error uploading file.");
+    }
+    //console.log(req.body);
+    //console.log(req.files);
+    //res.end("File is uploaded");
+    res.redirect('/profile/' + req.params.profile + '/view');
+  });
+});
 
 //socket io setup
 

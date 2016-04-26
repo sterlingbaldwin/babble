@@ -1,7 +1,14 @@
 <div class="row">
   <div class="medium-6 columns">
-    <img src="/images/batmap_profile.jpg" alt="" style="width:100%;"/>
-    <input type="file" class="btn waves-effect waves-light" style="width:100%;">Profile picture</input>
+    <img src="/uploads/{[{profile}]}.jpg" alt="" style="width:100%;"/>
+    <form id    =  "uploadForm"
+      enctype   =  "multipart/form-data"
+      action    =  "{[{ '/image_upload/' + profile }]}"
+      method    =  "post">
+        <input type="file" class="btn waves-effect waves-light" name="userImage"/>
+        <input type="submit" value="Upload" name="submit">
+    </form>
+    <!-- <input type="file" class="btn waves-effect waves-light" style="width:100%;">Profile picture</input> -->
   </div>
 
   <div class="medium-6 columns">

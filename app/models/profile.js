@@ -14,7 +14,7 @@ var Profile = new Schema({
     // status: String
   }],
   friend_list: [{ type: Schema.Types.ObjectId, ref: 'Profile' }],
-  profile_picture_path: { type: String }
+  profile_picture_path: { type: String, default:'batmap_profile.jpg' }
 });
 
 
