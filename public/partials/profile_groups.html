@@ -115,7 +115,7 @@
          ng-animate="'animate'"
          ng-repeat="m in $parent.message_list | reverse">
       <div class="card" ng-bind-html="m.content"></div>
-      <p>
+      <p ng-click="profile_modal_trigger(m.by)" class="chat-post-data">
         -- {[{m.by}]} @ {[{ m.posted }]}
       </p>
     </div>

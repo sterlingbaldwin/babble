@@ -21,6 +21,44 @@ module.exports.controller = function(app) {
     }
   });
 
+  app.get('/profile/:profile/get_profile_text', function(req, res){
+    if(!req.user){
+      res.send('No profile found');
+    } else {
+      Profile.findOne({
+        name: req.params.profile
+      })
+      .exec(function(err, doc){
+        if(err || !doc || typeof doc === "undefined"){
+          console.log('Error finding', req.params.profile);
+          if(err) console.log(err);
+        } else {
+          res.send(doc.profile_text);
+        }
+      })
+    }
+  });
+
+  app.post('/profile/:profile/set_profile_text', function(req, res){
+    if(!req.user){
+      res.send('No profile found');
+    } else {
+      Profile.findOne({
+        name: req.params.profile
+      })
+      .exec(function(err, doc){
+        if(err || !doc || typeof doc === "undefined"){
+          console.log('Error finding', req.params.profile);
+          if(err) console.log(err);
+        } else {
+          doc.profile_text = req.body.profile_text;
+          doc.save();
+          res.send(doc.profile_text);
+        }
+      })
+    }
+  });
+
   app.get('/profile/get_group_list/:name', function(req, res){
     if(!req.user){
       res.send('No user found');

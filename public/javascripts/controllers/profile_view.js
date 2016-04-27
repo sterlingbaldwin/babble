@@ -10,6 +10,52 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       $scope.public_group_list = [];
       $scope.$parent.send_profile($scope.profile);
       $scope.selected_discussion = false;
+      $scope.profile_edit = false;
+      $http({
+        url: '/profile/' + $scope.profile + '/get_profile_text',
+        method: 'GET'
+      })
+      .then(function(res){
+        $scope.profile_text = res.data;
+      })
+      .catch(function(res){
+        console.log('error getting profile_text');
+        if(res) console.log(res);
+      });
+    }
+
+    $scope.profile_modal_trigger = function(by){
+      $scope.selected_profile = by;
+      $http({
+        url: '/profile/' + by + '/get_profile_text',
+        method: 'GET'
+      })
+      .then(function(res){
+        $scope.selected_profile_text = res.data;
+        $('#profile_modal').foundation('reveal', 'open');
+      })
+      .catch(function(res){
+        console.log('error getting profile_text');
+        if(res) console.log(res);
+      });
+    }
+
+    $scope.profile_edit_send = function(){
+      $scope.profile_edit = false;
+      $http({
+        url: '/profile/' + $scope.profile + '/set_profile_text',
+        method: 'POST',
+        data: {
+          profile_text: $('#profile_text_edit').val()
+        }
+      })
+      .then(function(res){
+        $scope.profile_text = res.data;
+      })
+      .catch(function(res){
+        console.log('error getting profile_text');
+        if(res) console.log(res);
+      });
     }
 
     $scope.post_new_discussion = function(){
@@ -419,7 +465,7 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
     }
     $scope.select_group_click = function(){
       $scope.reset();
-      $scope.selected_tab = "group"
+      $scope.selected_tab = "group";
       $scope.get_groups();
     }
     $scope.select_discussion_click = function(){

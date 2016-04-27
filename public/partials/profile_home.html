@@ -1,5 +1,8 @@
 <div class="row">
   <div class="medium-6 columns">
+    <p>
+      Profile Image
+    </p>
     <img src="/uploads/{[{profile}]}.jpg" alt="" style="width:100%;"/>
     <form id    =  "uploadForm"
       enctype   =  "multipart/form-data"
@@ -12,7 +15,18 @@
   </div>
 
   <div class="medium-6 columns">
-    <p id="dummy-text">Set in the year 0 F.E. ("Foundation Era"), The Psychohistorians opens on Trantor, the capital of the 12,000-year-old Galactic Empire. Though the empire appears stable and powerful, it is slowly decaying in ways that parallel the decline of the Western Roman Empire. Hari Seldon, a mathematician and psychologist, has developed psychohistory, a new field of science and psychology that equates all possibilities in large societies to mathematics, allowing for the prediction of future events.</p>
-    <button class="btn waves-effect waves-light">edit profile text</button>
+    <p>
+      Profile Text
+    </p>
+    <p id="profile_text">
+      {[{profile_text}]}
+    </p>
+    <input type="text" name="profile_text" id="profile_text_edit" ng-show="profile_edit">
+    <button class="btn waves-effect waves-light" ng-show="profile_edit" ng-click="profile_edit_send()">
+      Submit profile text
+    </button>
+    <button class="btn waves-effect waves-light" ng-show="!profile_edit" ng-click="profile_edit = true">
+      Edit profile text
+    </button>
   </div>
 </div>

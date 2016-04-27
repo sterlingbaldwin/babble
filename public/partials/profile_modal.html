@@ -1,0 +1,17 @@
+<div id="profile_modal" class="reveal-modal" data-reveal aria-labelledby="profile_modal" aria-hidden="true" role="dialog">
+  <h3>
+    {[{selected_profile}]}
+  </h3>
+  <div class="medium-6 columns">
+    <img src="/uploads/{[{selected_profile}]}.jpg" alt="" style="width:100%;"/>
+  </div>
+  <div class="medium-6 columns">
+    <p>
+      {[{selected_profile_text}]}
+    </p>
+    <button type="button" class="btn waves-effect waves-light" ng-click="add_friend()" name="button">
+      Add friend
+    </button>
+  </div>
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>

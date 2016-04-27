@@ -86,6 +86,11 @@ a {
   cursor: hand;
 }
 
+.chat-post-data:hover {
+  cursor: pointer;
+  cursor: hand;
+}
+
 .group_card {
   /*float: left;*/
 }
