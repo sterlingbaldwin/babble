@@ -66,6 +66,7 @@
         return $scope.userID = args;
       });
       socket.on('message:new', function(data){
+        data.by = data.parent_profile;
         console.log('message:new');
         var d = new Date(data.posted);
         data.posted = d.toString();

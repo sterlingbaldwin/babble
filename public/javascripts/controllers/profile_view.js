@@ -265,6 +265,22 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
 
     }
 
+    //send the friend name to the server requesting
+    //they are added as a friend
+    $scope.add_friend = function(){
+      $http({
+        url:'/profile/' + $scope.profile + '/add_friend/' + $scope.selected_profile,
+        method:'POST'
+      })
+      .then(function(req){
+        console.log('Successfully added', $scope.selected_profile, 'as a friend to', $scope.profile);
+      })
+      .catch(function(req){
+        console.log('Error adding friend');
+        if(req)console.log(req);
+      })
+    }
+
     $scope.select_group = function(group){
       if(group._id == $scope.$parent.selected_group){
         return;
@@ -462,6 +478,7 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
     }
     $scope.select_home_click = function(){
       $scope.reset();
+      $scope.selected_tab = "home";
     }
     $scope.select_group_click = function(){
       $scope.reset();

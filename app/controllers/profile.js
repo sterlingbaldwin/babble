@@ -146,19 +146,19 @@ module.exports.controller = function(app) {
       });
   });
 
-  app.post('/profile/:name/add_friend/:friend_id', function(req, res){
-    Profile
-      .findOne({
-        'name': req.params.name
-      }).exec(function(err, doc){
-        if(err){
-          console.log(err);
-          res.sendStatus(500);
-        }
-        doc.friend_list.push(req.params.friend_id);
-        res.send('Added friend to list');
-      });
-  });
+  // app.post('/profile/:name/add_friend/:friend_id', function(req, res){
+  //   Profile
+  //     .findOne({
+  //       'name': req.params.name
+  //     }).exec(function(err, doc){
+  //       if(err){
+  //         console.log(err);
+  //         res.sendStatus(500);
+  //       }
+  //       doc.friend_list.push(req.params.friend_id);
+  //       res.send('Added friend to list');
+  //     });
+  // });
 
   app.post('/profile/:name/remove_friend/:friend_id', function(req, res){
     Profile
@@ -323,27 +323,39 @@ module.exports.controller = function(app) {
     }
   });
 
-  app.post('/profile/:name/add_friend/:fid', function(req, res){
-    if(!req.user || typeof req.params.name === 'undefined' || typeof req.params.fid === 'undefined'){
+  app.post('/profile/:name/add_friend/:fname', function(req, res){
+    console.log('got and add friend request from', req.params.name, 'to', req.params.fid, 'by', req.user);
+    if(!req.user || typeof req.params.name === 'undefined' || typeof req.params.fname === 'undefined'){
       res.redirect('index');
     }
     Profile
-      .findOne({
-        'name': req.params.name
-      })
-      .exec(function(err, doc){
-        if(err){
-          console.log(err);
-          res.sendStatus(500);
-        }
-        if(!doc){
-          console.log('Profile ' + req.params.name +' not found');
-          res.send('Could not find profile to add friend to');
-        }
-
-
-
-      });
+    .findOne({
+      'name': req.params.name
+    })
+    .exec(function(err, profile1){
+      if(err || !profile1 || typeof profile1 === "undefined"){
+        console.log('Profile ' + req.params.name +' not found');
+        res.send('Could not find profile to add friend to');
+        if(err)console.log(err);
+      } else {
+        //doc.friends_list.push(req.params.fid);
+        //doc.save();
+        Profile
+        .findOne({
+          name:req.params.fname
+        })
+        .exec(function(err, profile2){
+          if(err || !profile2  || typeof profile2 === "undefined"){
+            console.log('Profile ' + req.params.fname +' not found');
+            if(err)console.log(err);
+          } else {
+            console.log('Adding', profile2, 'as a friend to', profile1);
+            profile1.friend_list.push(profile2._id);
+            profile1.save();
+          }
+        });
+      }
+    });
   });
 
   // ====================================
