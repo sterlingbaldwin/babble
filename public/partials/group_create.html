@@ -4,7 +4,7 @@
    <input class="row left" style="margin-bottom:0px!important; margin-top:1em;"type="checkbox" id="create_group_privacy_box">
     private group?
   </input>
-   <p class="row" ng-repeat="friend in friend_list" ng-click="select_friend(friend)" id="{[{friend}]}_select">
+   <p class="row" ng-repeat="friend in friends_list" ng-click="select_friend(friend)" id="{[{friend}]}_select">
      {[{friend}]}
    </p>
    <button class="row btn waves-effect waves-light" ng-click="get_friends()">Add friends</button>

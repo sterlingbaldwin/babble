@@ -9,8 +9,11 @@
     <p>
       {[{selected_profile_text}]}
     </p>
-    <button type="button" class="btn waves-effect waves-light" ng-click="add_friend()" name="button">
+    <button type="button" ng-show="!inList" class="btn waves-effect waves-light" ng-click="add_friend()" name="button">
       Add friend
+    </button>
+    <button type="button" ng-show="inList" class="btn waves-effect waves-light" ng-click="remove_friend()" name="button">
+      Remove friend
     </button>
   </div>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>

@@ -1,32 +1,39 @@
 <div class="row">
-  <div class="medium-6 columns">
-    <p>
-      Profile Image
-    </p>
-    <img src="/uploads/{[{profile}]}.jpg" alt="" style="width:100%;"/>
-    <form id    =  "uploadForm"
-      enctype   =  "multipart/form-data"
-      action    =  "{[{ '/image_upload/' + profile }]}"
-      method    =  "post">
-        <input type="file" class="btn waves-effect waves-light" name="userImage"/>
-        <input type="submit" value="Upload" name="submit">
-    </form>
-    <!-- <input type="file" class="btn waves-effect waves-light" style="width:100%;">Profile picture</input> -->
-  </div>
+  <div class="card profile_card" style="height:50em;">
+    <div class="medium-6 columns">
+      <img src="/uploads/{[{profile}]}.jpg" alt="" class="card" style="width:100%;"/>
+      <form id    =  "uploadForm"
+        enctype   =  "multipart/form-data"
+        action    =  "{[{ '/image_upload/' + profile }]}"
+        method    =  "post">
+          <input type="file" class="btn waves-effect waves-light" name="userImage"/>
+          <input type="submit" value="Upload" name="submit">
+      </form>
+      <!-- <input type="file" class="btn waves-effect waves-light" style="width:100%;">Profile picture</input> -->
+    </div>
 
-  <div class="medium-6 columns">
-    <p>
-      Profile Text
-    </p>
-    <p id="profile_text">
-      {[{profile_text}]}
-    </p>
-    <input type="text" name="profile_text" id="profile_text_edit" ng-show="profile_edit">
-    <button class="btn waves-effect waves-light" ng-show="profile_edit" ng-click="profile_edit_send()">
-      Submit profile text
-    </button>
-    <button class="btn waves-effect waves-light" ng-show="!profile_edit" ng-click="profile_edit = true">
+    <div class="medium-6 columns card">
+      <p>
+        Profile Text
+      </p>
+      <p id="profile_text">
+        {[{profile_text}]}
+      </p>
+      <input type="text" name="profile_text" id="profile_text_edit" ng-show="profile_edit">
+      <button class="btn waves-effect waves-light" ng-show="profile_edit" ng-click="profile_edit_send()">
+        Submit profile text
+      </button>
+    </div>
+    <button class="btn waves-effect waves-light"
+            ng-show="!profile_edit"
+            ng-click="profile_edit = true"
+            style="margin-bottom: 1em;">
       Edit profile text
     </button>
+    <div class="card medium-6 columns amber accent-4" ng-repeat="f in friends_list track by $index">
+      <p ng-click="profile_modal_trigger(f)" class="chat-post-data">
+        {[{f}]}
+      </p>
+    </div>
   </div>
 </div>

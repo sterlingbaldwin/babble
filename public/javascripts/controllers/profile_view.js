@@ -6,7 +6,7 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       $scope.profile = window.location.href.split('/')[4];
       $scope.selected_tab = 'home';
       $scope.selected_friends = [];
-      $scope.friend_list = [];
+      $scope.friends_list = [];
       $scope.public_group_list = [];
       $scope.$parent.send_profile($scope.profile);
       $scope.selected_discussion = false;
@@ -21,6 +21,18 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       .catch(function(res){
         console.log('error getting profile_text');
         if(res) console.log(res);
+      });
+      $http({
+        url: '/profile/' + $scope.profile + '/friends_list',
+        method: 'GET'
+      })
+      .then(function(res){
+        console.log('Got friend list');
+        console.log(res);
+        $scope.friends_list = res.data;
+      })
+      .catch(function(res){
+
       });
     }
 
@@ -38,6 +50,27 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
         console.log('error getting profile_text');
         if(res) console.log(res);
       });
+      if(!$scope.friends_list || typeof $scope.friends_list === "undefined"){
+        $http({
+          url: '/profile/' + $scope.profile + '/friends_list',
+          method: 'GET'
+        }).then(function(res){
+          $scope.inList = false;
+          for(i in res.data){
+            if(res.data[i] === by){
+              $scope.inList = true;
+            }
+          }
+        }).catch();
+      } else {
+        $scope.inList = false;
+        for(i in $scope.friends_list){
+          if($scope.friends_list[i] === by){
+            $scope.inList = true;
+          }
+        }
+      }
+
     }
 
     $scope.profile_edit_send = function(){
@@ -281,6 +314,13 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       })
     }
 
+    $scope.remove_friend = function(){
+      $http({
+        url: '/profile/' + $scope.profile + '/remove_friend/' + $scope.selected_profile,
+        method: 'POST'
+      }).then(function(res){}).catch(function(res){});
+    }
+
     $scope.select_group = function(group){
       if(group._id == $scope.$parent.selected_group){
         return;
@@ -403,7 +443,7 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
         url: '/profile/' + $scope.profile + '/friends_list',
         method: 'GET'
       }).then(function(res){
-        $scope.friend_list = res.data;
+        $scope.friends_list = res.data;
         console.log(res);
       }).catch(function(res){
         console.log(res);

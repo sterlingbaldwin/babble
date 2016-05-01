@@ -13,7 +13,7 @@ var Profile = new Schema({
     // content: String,
     // status: String
   }],
-  friend_list: [{ type: Schema.Types.ObjectId, ref: 'Profile' }],
+  friends_list: [{ type: String }],
   profile_picture_path: { type: String, default:'batmap_profile.jpg' },
   profile_text : { type: String, default: 'Default profile text' }
 });
