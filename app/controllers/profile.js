@@ -115,6 +115,36 @@ module.exports.controller = function(app) {
     }
   });
 
+  app.post('/profile/:profile/mark_seen', function(req, res){
+    Profile.findOne({
+      'name': req.params.profile
+    })
+    .exec(function(err, profile){
+      console.log('got a notification mark_seen request');
+      if(err || typeof profile === "undefined" || !profile){
+        console.log('unable to find profile');
+        if(err)console.log(err);
+        res.sendStatus(500);
+      } else {
+        for(n in profile.notifications){
+          if(profile.notifications[n].content){
+            console.log(profile.notifications[n]);
+            profile.notifications[n].status = "seen";
+            profile.markModified('notifications');
+          }
+        }
+        console.log(JSON.stringify(profile.notifications));
+        profile.save(function(err){
+          if(err){
+            console.log('error saving profile');
+            console.log(err);
+          }
+        });
+        res.send('Successfully marked all notifications as seen');
+      }
+    })
+  })
+
   app.get('/profile/:name/friends_list', function(req, res){
     console.log('Got a friends list request');
 
@@ -161,6 +191,21 @@ module.exports.controller = function(app) {
               console.log('Adding', req.params.fname, 'as a friend to', profile1.name);
               profile1.friends_list.push(req.params.fname);
               profile1.save();
+              res.send('Successfully added friend');
+
+              //add to the notifications list for the new friend
+              Profile.findOne({
+                'name': req.params.fname
+              })
+              .exec(function(err, doc){
+                var n = {
+                  type: 'New Friend',
+                  content: req.params.name + ' added you as a friend.',
+                  status: 'unseen'
+                }
+                doc.notifications.push(n);
+                doc.save();
+              });
             }
           }
         });
@@ -180,13 +225,17 @@ module.exports.controller = function(app) {
           friends_list: req.params.fname
         }
       }, function(err, num){
+        console.log('num affected');
+        console.log(num);
         if(err){
           console.log(err);
         }
-        if(num > 0){
+        if(num.n > 0){
+          console.log('removed', req.params.fname, 'from friends list of', req.params.name);
           res.send('Removed profile from friends_list');
         } else {
-          res.send('Unable to find profile to remove from friends_list');
+          //res.send('Unable to find profile to remove from friends_list');
+          res.sendStatus(500);
         }
       })
       // Profile.findOne({

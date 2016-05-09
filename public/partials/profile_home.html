@@ -30,10 +30,12 @@
             style="margin-bottom: 1em;">
       Edit profile text
     </button>
-    <div class="card medium-6 columns amber accent-4" ng-repeat="f in friends_list track by $index">
-      <p ng-click="profile_modal_trigger(f)" class="chat-post-data">
-        {[{f}]}
-      </p>
+    <div class="card medium-6 columns" ng-show="friends_list.length != 0">
+      <div class="card columns amber accent-4" ng-repeat="f in friends_list track by $index">
+        <p ng-click="profile_modal_trigger(f)" class="chat-post-data">
+          {[{f}]}
+        </p>
+      </div>
     </div>
   </div>
 </div>
