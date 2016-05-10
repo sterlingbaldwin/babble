@@ -340,6 +340,11 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       $scope.$parent.selected_group = group._id;
       $scope.$parent.selected_group_obj = group;
 
+      $('#discussion-wrapper')
+      .mCustomScrollbar({
+        theme: 'rounded-dots'
+      });
+
       // var index = 0;
       // for(i in $scope.$parent.group_list){
       //   if($scope.$parent.group_list[i] && $scope.$parent.group_list[i].id == $scope.$parent.selected_group){

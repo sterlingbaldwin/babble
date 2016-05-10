@@ -29,19 +29,19 @@
       <button ng-click="select_profile(profile)"
               class="btn waves-effect waves-light profile_select_btn"
               id="{[{profile.name}]}_select">
-        Select
+        Select Profile
       </button>
 
       {{!-- If profile is selected, goes to that profiles view page --}}
       <button ng-show="selected_profile.name == profile.name" class="btn waves-effect waves-light" ng-click='link_to_profile()'>
         <span class="fa fa-heart"></span>
-        Profile
+        View Groups
       </button>
 
       {{!-- Remove the profile --}}
       <button ng-click="remove_profile_modal_trigger()" ng-show="selected_profile.name == profile.name" class="btn waves-effect waves-light">
         <span class="fa fa-user-times"></span>
-        Remove
+        Remove Profile
       </button>
       {{!-- <div ng-repeat="group in profile.subscribed_groups")
         <p> {[{group}]} </p>

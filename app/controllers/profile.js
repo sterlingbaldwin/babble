@@ -426,18 +426,27 @@ module.exports.controller = function(app) {
           rep: 0,
           notifications: [{}]
         });
-        //p.notifications.push(n);
         console.log(JSON.stringify(p));
         n = {
           type: 'NewProfile',
           status: 'unseen',
-          content: 'Welcome ' + req.user.local.email + ' to your new profile ' + p.name + '!'
+          content: 'Welcome ' + p.name + '!'
         }
+        p.notifications.pop();
         p.notifications.push(n);
+
+
         p.save({}, function(args){
           if(args)
           console.log(args);
         });
+        // for(i in p.notifications){
+        //   if(!p.notifications[i]){
+        //     p.notifications.
+        //   }
+        // }
+        // Profile.findOneAndUpdate({'name':p.name},{$pull:{'notifications':null}})
+
 
         fs.createReadStream('public/images/batmap_profile.jpg').pipe(fs.createWriteStream('public/uploads/' + p.name + '.jpg'));
 
