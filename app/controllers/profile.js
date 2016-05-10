@@ -440,13 +440,6 @@ module.exports.controller = function(app) {
           if(args)
           console.log(args);
         });
-        // for(i in p.notifications){
-        //   if(!p.notifications[i]){
-        //     p.notifications.
-        //   }
-        // }
-        // Profile.findOneAndUpdate({'name':p.name},{$pull:{'notifications':null}})
-
 
         fs.createReadStream('public/images/batmap_profile.jpg').pipe(fs.createWriteStream('public/uploads/' + p.name + '.jpg'));
 

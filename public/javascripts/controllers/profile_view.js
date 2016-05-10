@@ -345,14 +345,6 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
         theme: 'rounded-dots'
       });
 
-      // var index = 0;
-      // for(i in $scope.$parent.group_list){
-      //   if($scope.$parent.group_list[i] && $scope.$parent.group_list[i].id == $scope.$parent.selected_group){
-      //     index = i;
-      //     break;
-      //   }
-      // }
-
       $('.selected')
       .addClass('unselected')
       .removeClass('custom-width-2');
@@ -369,6 +361,10 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       .addClass('selected')
       .addClass('custom-width-2')
       .removeClass('unselected');
+
+      $('#add-group-card')
+      .addClass('custom-offset-1')
+      .removeClass('custom-offset-2');
 
       $http({
         url: '/group/' + group._id + '/get_discussion_list',
@@ -400,7 +396,7 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
           top:1000,position:'absolute'
         })
         .animate({
-            top:$("#group_" + group._id).offset().top - 20
+            top:$("#group_" + group._id).offset().top - 50
           }, 800, function() {
             //callback
         });
@@ -522,6 +518,19 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
         $scope.$parent.group_list = res.data;
         $scope.$parent.group_list.sort($scope.group_compare);
         console.log(res);
+        $scope.$parent.selected_group = null;
+        $('.group_card')
+        .addClass('custom-offset-2')
+        .removeClass('custom-offset-1');
+
+        $('#add-group-card')
+        .addClass('custom-offset-2')
+        .removeClass('custom-offset-1');
+
+        $('#group-wrapper')
+        .mCustomScrollbar({
+          theme: 'rounded-dots'
+        });
       }).catch(function(res){
         console.log(res);
       });
@@ -547,6 +556,10 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
     $scope.reset = function(){
       $scope.init();
       $('.discussion-wrapper').css('opacity', '0');
+
+      $('#add-group-card')
+      .addClass('custom-offset-2')
+      .removeClass('custom-offset-1');
     }
 
     $scope.move = function(array, from, to) {

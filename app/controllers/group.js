@@ -295,7 +295,13 @@ module.exports.controller = function(app) {
           return;
         }
         console.log('found group:', doc.name);
-        if(!(req.body.profile in doc.subscribed_profiles)){
+        var inList = false;
+        for(i in doc.subscribed_profiles){
+          if(req.body.profile == doc.subscribed_profiles[i]){
+            inList = true;
+          }
+        }
+        if(!inList){
           doc.subscribed_profiles.push(req.body.profile);
           doc.save();
           Profile.update({
