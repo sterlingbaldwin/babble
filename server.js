@@ -72,8 +72,6 @@ io.on('connection', function(client){
 
   client.on('init', function(data){
     console.log('got an init from client:', client.id, ' with profile:', data.profile);
-    //console.log(data);
-    //client.send('message to client');
     client.profile = data.profile;
     websockets[client.id] = client;
     client.emit('clientId', client.id);

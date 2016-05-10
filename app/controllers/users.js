@@ -7,23 +7,29 @@ module.exports.controller = function(app) {
   // =====================================
   // REGISTER ============================
   // =====================================
-  app.post('/user/register', passport.authenticate('local-signup', {
-    successRedirect : '/profile', // redirect to the secure profile section
-    failureRedirect : '/', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
-  },function(err, user, info){
-    console.log(JSON.stringify(user));
-  }));
+  app.post('/user/register', passport.authenticate('local-signup'),
+    function(req, res){
+      if(!req.user){
+        console.log('User not logged in');
+        res.sendStatus(500);
+      } else {
+        res.send('success');
+      }
+    });
 
   // =====================================
   // LOGIN ===============================
   // =====================================
   app.post('/user/login',
-    passport.authenticate('local-login', {
-      successRedirect : '/profile', // redirect to the secure profile section
-      failureRedirect : '/', // redirect back to the signup page if there is an error
-      failureFlash : true // allow flash messages
-    }));
+    passport.authenticate('local-login'),
+    function(req, res){
+      if(!req.user){
+        console.log('User not logged in');
+        res.sendStatus(500);
+      } else {
+        res.send('success');
+      }
+    });
 
 
   // =====================================

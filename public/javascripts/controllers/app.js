@@ -196,6 +196,13 @@
           return window.location.href = '/profile';
         })["catch"](function(res) {
           console.log('error logging in');
+          $('#login-username-label')
+          .text("Invalid username or login")
+          .addClass("red")
+          .css({
+            color: 'black'
+          });
+
           return console.log(res);
         });
       };
@@ -216,6 +223,12 @@
         }).then(function(response) {
           $('#register_modal').foundation('reveal', 'close');
         })["catch"](function(response) {
+          $('#register-username-label')
+          .text("Username already taken")
+          .addClass("red")
+          .css({
+            color: 'black'
+          });
           console.log('Error registering user');
         });
       };

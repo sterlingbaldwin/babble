@@ -40,6 +40,7 @@ module.exports = function(passport) {
           return done(err);
         // check to see if theres already a user with that email
         if (user) {
+          console.log('Account already exists');
           return done(null, false);
         } else {
           // if there is no user with that email
@@ -87,6 +88,7 @@ module.exports = function(passport) {
       // if no user is found, return the message
       if (!user){
         console.log('no user found');
+        return done(null, false);
         //return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
         //res.send({success: false, message: 'unable to find user'});
         return;
