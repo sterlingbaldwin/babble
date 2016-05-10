@@ -11,6 +11,8 @@ module.exports.controller = function(app) {
     successRedirect : '/profile', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
+  },function(err, user, info){
+    console.log(JSON.stringify(user));
   }));
 
   // =====================================
@@ -21,7 +23,7 @@ module.exports.controller = function(app) {
       successRedirect : '/profile', // redirect to the secure profile section
       failureRedirect : '/', // redirect back to the signup page if there is an error
       failureFlash : true // allow flash messages
-  }));
+    }));
 
 
   // =====================================

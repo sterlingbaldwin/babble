@@ -4,6 +4,7 @@ var Log           = require('../models/log');
 var Account       = require('../models/account');
 var Group         = require('../models/group');
 var async         = require('async');
+var fs            = require('fs');
 
 module.exports.controller = function(app) {
 
@@ -426,12 +427,7 @@ module.exports.controller = function(app) {
           notifications: [{}]
         });
         //p.notifications.push(n);
-        console.log(p);
-        p.save({}, function(args){
-          if(args)
-          console.log(args);
-        });
-
+        console.log(JSON.stringify(p));
         n = {
           type: 'NewProfile',
           status: 'unseen',
@@ -442,6 +438,8 @@ module.exports.controller = function(app) {
           if(args)
           console.log(args);
         });
+
+        fs.createReadStream('public/images/batmap_profile.jpg').pipe(fs.createWriteStream('public/uploads/' + p.name + '.jpg'));
 
         var data = {
           new_profile: p

@@ -4,7 +4,7 @@
 <div ng-include="" src="'/partials/topbar.html'"></div>
 
 <div ng-controller="ProfileControl" ng-init="init()">
-  <h3 class="large-offset-1"> Welcome {[{user.local.email}]} to your profile page </h3>
+  <h3 class="large-offset-1"> Profile Select </h3>
 
   <div ng-repeat="profile in profile_list"
        class="card large-4 large-offset-1 rows waves-effect waves-light"
@@ -12,8 +12,6 @@
        id="{[{profile.name}]}_box">
     <div class="content" style="border: 4px solid white; padding: 1em;">
       <h2 class="title"> {[{profile.name}]} </h2>
-      <p> reputation: {[{profile.rep}]} </p>
-
       <div ng-show="selected_profile.name == profile.name && profile.notifications"
            class="log_item_holder card unselected"
            style=" width:80%;"
@@ -50,8 +48,8 @@
       </div> --}}
     </div>
   </div>
-  <div class="large-offset-1">
-    <p ng-show="profile_list.length < 1" class="large-offset-1">
+  <div class="large-offset-1 card" style="width: 40%">
+    <p ng-show="profile_list.length < 1">
       Looks like you dont have any profiles setup, would you like to make one?
     </p>
     <button class="btn waves-effect waves-light row medium-4" ng-click="new_profile_modal_trigger()"> Create New Profile </button>
