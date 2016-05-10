@@ -7,7 +7,7 @@
   <h3 class="large-offset-1"> Welcome {[{user.local.email}]} to your profile page </h3>
 
   <div ng-repeat="profile in profile_list"
-       class="card large-4 large-offset-1 rows unselected waves-effect waves-light"
+       class="card large-4 large-offset-1 rows waves-effect waves-light"
        ng-click="select_profile(profile)"
        id="{[{profile.name}]}_box">
     <div class="content" style="border: 4px solid white; padding: 1em;">
@@ -15,11 +15,13 @@
       <p> reputation: {[{profile.rep}]} </p>
 
       <div ng-show="selected_profile.name == profile.name && profile.notifications"
-           class="log_item_holder card yellow accent-4 unselected"
-           style=" width:80%;">
-        <div class="profile-notification yellow lighten-5"
+           class="log_item_holder card unselected"
+           style=" width:80%;"
+           ng-click="mark_seen(profile)">
+        <div class="profile-notification card"
              ng-repeat="n in profile.notifications"
-             style="border-radius:2px; padding:2px;margin-left:2px;">
+             style="border-radius:2px; padding:2px;margin-left:2px;"
+             ng-class="{unseen:'amber accent-3', seen:'blue lighten-2'}[n.status]">
           <p>{[{n.type}]}</p>
           <p>{[{n.content}]}</p>
         </div>

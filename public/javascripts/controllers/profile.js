@@ -5,9 +5,24 @@ angular.module('babble.profile', []).controller('ProfileControl', [
     $scope.profile_list = [];
 
     $scope.link_to_profile = function(){
-      window.location.href="/profile/" + $scope.selected_profile.name + "/view"
+      window.location.href= "/profile/" + $scope.selected_profile.name + "/view"
     }
 
+    $scope.mark_seen = function(profile){
+      $http({
+        url: '/profile/' + profile.name + '/mark_seen',
+        method: 'POST'
+      })
+      .then(function(res){
+        for(n in $scope.selected_profile.notifications){
+          $scope.selected_profile.notifications[n].status = "seen";
+        }
+      })
+      .catch(function(res){
+        console.log('error marking profile notifications as seen');
+        console.log(res);
+      })
+    }
 
     $scope.select_profile = function(profile){
       console.log(profile);
@@ -32,7 +47,6 @@ angular.module('babble.profile', []).controller('ProfileControl', [
     }
 
     $scope.init = function() {
-
       $http({
         url: '/profile/list',
         method: 'GET'

@@ -301,24 +301,34 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
     //send the friend name to the server requesting
     //they are added as a friend
     $scope.add_friend = function(){
+      console.log('Attempting to add' + $scope.selected_profile + ' to friends_list');
       $http({
         url:'/profile/' + $scope.profile + '/add_friend/' + $scope.selected_profile,
         method:'POST'
       })
       .then(function(req){
         console.log('Successfully added', $scope.selected_profile, 'as a friend to', $scope.profile);
+        $scope.inList = true;
+        if(typeof $scope.friends_list === "undefined"){
+          $scope.friends_list = [];
+        }
+        $scope.friends_list.push($scope.selected_profile);
       })
       .catch(function(req){
         console.log('Error adding friend');
         if(req)console.log(req);
-      })
+        $scope.inList = false;
+      });
     }
 
     $scope.remove_friend = function(){
       $http({
         url: '/profile/' + $scope.profile + '/remove_friend/' + $scope.selected_profile,
         method: 'POST'
-      }).then(function(res){}).catch(function(res){});
+      }).then(function(res){
+        $scope.inList = false;
+        $scope.friends_list.splice($scope.friends_list.indexOf($scope.selected_profile), 1);
+      }).catch(function(res){});
     }
 
     $scope.select_group = function(group){
