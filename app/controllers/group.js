@@ -307,6 +307,7 @@ module.exports.controller = function(app) {
           }, function(args){
             console.log(args);
           });
+          res.send('success');
         }
 
       });
