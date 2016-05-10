@@ -557,6 +557,7 @@ angular.module('babble.profile_view', ['ngSanitize', 'ngAnimate']).controller('P
       $scope.init();
       $scope.$parent.selected_group = null;
       $scope.$parent.selected_discussion = null;
+      $scope.discussion_back();
       $('.discussion-wrapper').css('opacity', '0');
 
       $('#add-group-card')
